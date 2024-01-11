@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
     "declaration": true,
-    "lib": ["ESNext"],
     "removeComments": true,
-    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
