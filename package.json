@@ -5,20 +5,8 @@
   "author": "Sherbolot Arbaev",
   "private": true,
   "license": "UNLICENSED",
-  "keywords": [
-    "nestjs",
-    "jwt",
-    "passport",
-    "typescript",
-    "prisma",
-    "class-validator",
-    "postgresql",
-    "supabase",
-    "bcrypt",
-    "cache-manager"
-  ],
   "scripts": {
-    "build": "nest build",
+    "build": "prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
