@@ -8,6 +8,12 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
+interface ExtendedRequest extends Request {
+  headers: {
+    [key: string]: string;
+  };
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -25,7 +31,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<ExtendedRequest>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
