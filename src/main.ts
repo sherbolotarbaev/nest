@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 
 async function start() {
   const app = await NestFactory.create(AppModule);
+  const port = process.env.PORT || 888;
   const logger = new Logger('NestApplication');
 
   app.useGlobalPipes(new ValidationPipe());
@@ -20,8 +21,8 @@ async function start() {
     }),
   );
 
-  await app.listen(process.env.PORT);
-  logger.log(`Server is running on: http://localhost:${process.env.PORT} ⚡️`);
+  await app.listen(port);
+  logger.log(`Server is running on: http://localhost:${port} ⚡️`);
 }
 
 start();
