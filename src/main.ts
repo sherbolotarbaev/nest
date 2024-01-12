@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import bodyParser from 'body-parser';
+import * as bodyParser from 'body-parser';
 
 async function start() {
   const app = await NestFactory.create(AppModule);
@@ -23,4 +23,4 @@ async function start() {
   await app.listen(process.env.PORT);
   logger.log(`Server is running on: http://localhost:${process.env.PORT} ⚡️`);
 }
-start();
+export default start();
