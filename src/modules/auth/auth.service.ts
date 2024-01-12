@@ -52,7 +52,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    if (!user.isVerified && !user.verificationToken) {
+    if (!user.isVerified || !user.verificationToken) {
       await this.sendVerificationCode(user.id, user.email, user.firstName);
     }
 
@@ -60,7 +60,7 @@ export class AuthService {
 
     try {
       return {
-        user,
+        message: `Successfully logged in as a ${user.username}`,
         token,
       };
     } catch (e) {
