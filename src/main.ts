@@ -23,4 +23,5 @@ async function start() {
   await app.listen(process.env.PORT);
   logger.log(`Server is running on: http://localhost:${process.env.PORT} ⚡️`);
 }
+// TESTING
 export default start();
