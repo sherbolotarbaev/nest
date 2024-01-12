@@ -1,5 +1,4 @@
 {
-  "type": "commonjs",
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -17,6 +16,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@auth": ["src/modules/auth"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@prisma": ["src/modules/prisma"],
+      "@prisma/*": ["src/modules/prisma/*"],
+      "@jwt": ["src/modules/jwt"],
+      "@jwt/*": ["src/modules/jwt/*"],
+      "@users": ["src/modules/users"],
+      "@users/*": ["src/modules/users/*"],
+      "@upload": ["src/modules/upload"],
+      "@upload/*": ["src/modules/upload/*"]
+    }
   }
 }
