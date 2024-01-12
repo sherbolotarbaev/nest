@@ -25,4 +25,4 @@ async function start() {
   logger.log(`Server is running on: http://localhost:${port} ⚡️`);
 }
 
-start();
+export default start();
