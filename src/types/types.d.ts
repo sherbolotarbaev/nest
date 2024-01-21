@@ -9,7 +9,7 @@ type User = {
   username: string;
   photo?: string;
   password: string;
-  resetPasswordSecret?: string;
+  resetPasswordToken?: string;
   verificationToken?: string;
   isActive: boolean;
   isVerified: boolean;
