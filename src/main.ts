@@ -11,7 +11,7 @@ async function start() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    origin: process.env.FRONTEND_BASE_URL,
+    origin: ['http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
@@ -21,8 +21,13 @@ async function start() {
     }),
   );
 
-  await app.listen(port);
-  logger.log(`Server is running on: http://localhost:${port} ⚡️`);
+  try {
+    await app.listen(port);
+    logger.log(`Server is running on: http://localhost:${port} ⚡️`);
+  } catch (e: any) {
+    console.error(e);
+    process.exit(1);
+  }
 }
 
 start();

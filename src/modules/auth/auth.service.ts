@@ -35,7 +35,7 @@ export class AuthService {
 
     try {
       return {
-        user,
+        message: `Successfully registered as ${user.firstName} ${user.lastName}`,
         token,
       };
     } catch (e) {
@@ -60,7 +60,7 @@ export class AuthService {
 
     try {
       return {
-        message: `Successfully logged in as a ${user.username}`,
+        message: `Successfully logged in as ${user.firstName} ${user.lastName}`,
         token,
       };
     } catch (e) {
@@ -160,7 +160,7 @@ export class AuthService {
           id: user.id,
         },
         data: {
-          resetPasswordSecret: token,
+          resetPasswordToken: token,
         },
       }),
       this.mailerService.sendMail({

@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/guards';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         },
       },
     }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     AuthModule,
     UsersModule,
     PrismaModule,
