@@ -60,7 +60,10 @@ export class AuthService {
     const token = await this.jwt.generateToken(user.id);
 
     response.cookie('token', token, {
-      httpOnly: true,
+      maxAge: 60 * 30 * 1000, // 30 minutes
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
     });
 
     try {
