@@ -25,6 +25,18 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
+  @Get('cookie-test')
+  @HttpCode(HttpStatus.OK)
+  async cookieTest(@Res({ passthrough: true }) response: Response) {
+    return response.cookie('test-cookie', 'test-cookie-value', {
+      maxAge: 60 * 30 * 1000, // 30 minutes
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+    });
+  }
+
+  @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() dto: RegisterDto) {
@@ -34,11 +46,8 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(
-    @Body() dto: LoginDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    return await this.authService.login(dto, response);
+  async login(@Body() dto: LoginDto) {
+    return await this.authService.login(dto);
   }
 
   @Get('me')

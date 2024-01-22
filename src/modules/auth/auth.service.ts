@@ -17,7 +17,6 @@ import { compare, hash } from '../../utils/bcrypt';
 import { JwtService } from '../jwt/jwt.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
-import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +44,7 @@ export class AuthService {
     }
   }
 
-  async login({ emailOrUsername, password }: LoginDto, response: Response) {
+  async login({ emailOrUsername, password }: LoginDto) {
     const user = await this.usersService.findByEmailOrUsername(emailOrUsername);
     const comparedPassword = await compare(password, user.password);
 
@@ -59,17 +58,10 @@ export class AuthService {
 
     const token = await this.jwt.generateToken(user.id);
 
-    response.cookie('token', token, {
-      maxAge: 60 * 30 * 1000, // 30 minutes
-      secure: true,
-      sameSite: 'lax',
-      domain: 'localhost',
-      path: '/',
-    });
-
     try {
       return {
         message: `Successfully logged in as ${user.firstName} ${user.lastName}`,
+        token,
       };
     } catch (e) {
       console.error(e);
