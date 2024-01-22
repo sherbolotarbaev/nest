@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public, UserId } from './decorators';
@@ -17,6 +18,7 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from './dto';
+import { Response } from 'express';
 
 @Controller()
 export class AuthController {
@@ -32,8 +34,11 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginDto) {
-    return await this.authService.login(dto);
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return await this.authService.login(dto, response);
   }
 
   @Get('me')
