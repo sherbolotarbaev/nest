@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Ip,
   Patch,
   Post,
   Res,
@@ -25,14 +26,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @Get('cookie-test')
+  @Get()
   @HttpCode(HttpStatus.OK)
-  async cookieTest(@Res({ passthrough: true }) response: Response) {
-    return response.cookie('test-cookie', 'test-cookie-value', {
-      maxAge: 60 * 30 * 1000, // 30 minutes
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
+  async main(@Ip() ip: string, @Res() response: Response) {
+    response.status(HttpStatus.OK).json({
+      ip,
+      statusCode: HttpStatus.OK,
+      message: 'SUCCESS ✅',
     });
   }
 
