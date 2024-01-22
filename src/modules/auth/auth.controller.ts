@@ -4,9 +4,9 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Ip,
   Patch,
   Post,
+  Req,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -19,7 +19,7 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from './dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller()
 export class AuthController {
@@ -28,9 +28,17 @@ export class AuthController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  async main(@Ip() ip: string, @Res() response: Response) {
+  async main(@Req() request: Request, @Res() response: Response) {
+    const ip =
+      request.headers['x-real-ip'] ||
+      request.headers['x-forwarded-for'] ||
+      request.socket.remoteAddress ||
+      '';
+
+    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+
     response.status(HttpStatus.OK).json({
-      ip,
+      ip: ipAddress,
       statusCode: HttpStatus.OK,
       message: 'SUCCESS ✅',
     });
