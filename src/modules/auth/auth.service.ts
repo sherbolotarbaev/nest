@@ -63,6 +63,7 @@ export class AuthService {
       maxAge: 60 * 30 * 1000, // 30 minutes
       secure: true,
       sameSite: 'lax',
+      domain: 'localhost',
       path: '/',
     });
 
