@@ -268,13 +268,13 @@ export class UsersService {
   private async generateUniqueUsername(email: string): Promise<string> {
     let username = email.toLowerCase().split('@')[0].trim();
 
-    const existingUser = await this.prisma.user.findUnique({
+    const existUsername = await this.prisma.user.findUnique({
       where: {
         username,
       },
     });
 
-    if (existingUser) {
+    if (existUsername) {
       username = `${username}-${Date.now()}`;
     }
 

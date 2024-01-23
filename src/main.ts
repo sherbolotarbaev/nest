@@ -7,9 +7,15 @@ import cookieParser from 'cookie-parser';
 async function start() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 888;
+  
   const logger = new Logger('NestApplication');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
 
   app.enableCors({
     origin: ['http://localhost:3000'],
