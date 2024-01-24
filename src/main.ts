@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 async function start() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 888;
-  
+
   const logger = new Logger('NestApplication');
 
   app.useGlobalPipes(
