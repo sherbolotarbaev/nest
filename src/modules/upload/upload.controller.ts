@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UserId } from '../auth/decorators';
+import { UserId } from '../auth/common';
 import { UploadService } from './upload.service';
 
 @Controller('upload')

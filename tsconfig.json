@@ -20,12 +20,12 @@
     "paths": {
       "@auth": ["src/modules/auth"],
       "@auth/*": ["src/modules/auth/*"],
+      "@users": ["src/modules/users"],
+      "@users/*": ["src/modules/users/*"],
       "@prisma": ["src/modules/prisma"],
       "@prisma/*": ["src/modules/prisma/*"],
       "@jwt": ["src/modules/jwt"],
       "@jwt/*": ["src/modules/jwt/*"],
-      "@users": ["src/modules/users"],
-      "@users/*": ["src/modules/users/*"],
       "@upload": ["src/modules/upload"],
       "@upload/*": ["src/modules/upload/*"]
     }

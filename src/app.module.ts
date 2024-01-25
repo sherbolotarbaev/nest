@@ -9,7 +9,7 @@ import {
   UploadModule,
 } from './modules';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './modules/auth/guards';
+import { AuthGuard } from './modules/auth/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailerModule } from '@nestjs-modules/mailer';
 

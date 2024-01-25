@@ -9,7 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserId } from '../auth/decorators';
+import { UserId } from '../auth/common';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @UseInterceptors(CacheInterceptor)

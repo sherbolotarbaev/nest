@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public, UserId } from './decorators';
+import { Public, UserId } from './common';
 import {
   LoginDto,
   RegisterDto,
