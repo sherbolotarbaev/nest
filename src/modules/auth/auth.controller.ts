@@ -43,6 +43,7 @@ export class AuthController {
     return response
       .cookie('IP', ipAddress, {
         sameSite: 'none',
+        httpOnly: false,
         secure: true,
         maxAge: 60 * 30 * 1000,
         path: '/',
