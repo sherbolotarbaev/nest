@@ -37,6 +37,11 @@ export class AuthController {
 
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
+    response.setHeader(
+      'Set-Cookie',
+      `IP=${ipAddress}; Max-Age=1800; Secure=false; SameSite=true; HttpOnly=true`,
+    );
+
     response.status(HttpStatus.OK).json({
       ip: ipAddress,
       statusCode: HttpStatus.OK,
