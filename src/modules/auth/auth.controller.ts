@@ -44,8 +44,6 @@ export class AuthController {
       sameSite: true,
       httpOnly: true,
       expires: new Date(Date.now() + 30 * 60 * 1000),
-      path: '/',
-      domain: '.vercel.app',
     });
 
     response.status(HttpStatus.OK).json({
