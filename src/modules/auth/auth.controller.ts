@@ -28,7 +28,10 @@ export class AuthController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  async main(@Req() request: Request, @Res() response: Response) {
+  async main(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const ip =
       request.headers['x-real-ip'] ||
       request.headers['x-forwarded-for'] ||
@@ -37,10 +40,13 @@ export class AuthController {
 
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
-    response.setHeader(
-      'Set-Cookie',
-      `IP=${ipAddress}; Max-Age=1800; Secure=false; SameSite=true; HttpOnly=true`,
-    );
+    response.cookie('IP', ipAddress, {
+      sameSite: true,
+      httpOnly: true,
+      expires: new Date(Date.now() + 30 * 60 * 1000),
+      path: '/',
+      domain: '.vercel.app',
+    });
 
     response.status(HttpStatus.OK).json({
       ip: ipAddress,
