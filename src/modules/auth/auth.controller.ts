@@ -21,6 +21,8 @@ import {
 } from './dto';
 import { Request, Response } from 'express';
 
+import { getLocation } from '../../utils/location';
+
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -39,24 +41,13 @@ export class AuthController {
       '';
 
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+    const location = await getLocation(ipAddress);
 
     return response.status(HttpStatus.OK).json({
       ip: ipAddress,
+      ...location,
       statusCode: HttpStatus.OK,
       message: 'SUCCESS ✅',
-    });
-  }
-
-  @Public()
-  @Post('cookies')
-  @HttpCode(HttpStatus.OK)
-  async cookies(@Res({ passthrough: true }) response: Response) {
-    return response.cookie('cookie', 'value', {
-      sameSite: 'lax',
-      httpOnly: false,
-      secure: true,
-      maxAge: 60 * 30 * 1000,
-      path: '/',
     });
   }
 
