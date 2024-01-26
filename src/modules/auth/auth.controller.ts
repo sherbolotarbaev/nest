@@ -40,20 +40,24 @@ export class AuthController {
 
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
-    return response
-      .cookie('IP', ipAddress, {
-        sameSite: 'lax',
-        httpOnly: false,
-        secure: true,
-        maxAge: 60 * 30 * 1000,
-        path: '/',
-      })
-      .status(HttpStatus.OK)
-      .json({
-        ip: ipAddress,
-        statusCode: HttpStatus.OK,
-        message: 'SUCCESS ✅',
-      });
+    return response.status(HttpStatus.OK).json({
+      ip: ipAddress,
+      statusCode: HttpStatus.OK,
+      message: 'SUCCESS ✅',
+    });
+  }
+
+  @Public()
+  @Post('cookies')
+  @HttpCode(HttpStatus.OK)
+  async cookies(@Res({ passthrough: true }) response: Response) {
+    return response.cookie('cookie', 'value', {
+      sameSite: 'lax',
+      httpOnly: false,
+      secure: true,
+      maxAge: 60 * 30 * 1000,
+      path: '/',
+    });
   }
 
   @Public()
