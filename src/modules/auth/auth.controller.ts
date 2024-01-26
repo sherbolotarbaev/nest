@@ -41,9 +41,11 @@ export class AuthController {
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
 
     response.cookie('IP', ipAddress, {
-      sameSite: true,
-      httpOnly: true,
-      expires: new Date(Date.now() + 30 * 60 * 1000),
+      sameSite: 'none',
+      // httpOnly: true,
+      secure: true,
+      maxAge: 60 * 30 * 1000,
+      path: '/',
     });
 
     response.status(HttpStatus.OK).json({
