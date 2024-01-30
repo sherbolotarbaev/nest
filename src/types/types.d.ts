@@ -1,4 +1,4 @@
-type UserRole = "USER" | "ADMIN";
+type UserRole = 'USER' | 'ADMIN';
 
 type User = {
   id: number;
@@ -15,4 +15,11 @@ type User = {
   isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+type LocationData = {
+  city: string;
+  region: string;
+  country: string;
+  timezone: string;
 };
