@@ -30,10 +30,7 @@ export class AuthController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  async main(
-    @Req() request: Request,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async main(@Req() request: Request, @Res() response: Response) {
     const ip =
       request.headers['x-real-ip'] ||
       request.headers['x-forwarded-for'] ||
@@ -45,7 +42,7 @@ export class AuthController {
 
     return response.status(HttpStatus.OK).json({
       ip: ipAddress,
-      ...location,
+      location,
       statusCode: HttpStatus.OK,
       message: 'SUCCESS ✅',
     });
