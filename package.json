@@ -1,7 +1,7 @@
 {
   "name": "nest",
   "version": "0.0.1",
-  "description": "Authentication System with NestJS",
+  "description": "NestJS",
   "author": "Sherbolot Arbaev",
   "private": true,
   "license": "UNLICENSED",
