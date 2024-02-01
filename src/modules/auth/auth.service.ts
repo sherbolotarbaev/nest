@@ -17,6 +17,8 @@ import { compare, hash } from '../../utils/bcrypt';
 import { JwtService } from '../jwt/jwt.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
+import { Request, Response } from 'express';
+import { getLocation } from '../../utils/location';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +28,58 @@ export class AuthService {
     private prisma: PrismaService,
     private mailerService: MailerService,
   ) {}
+
+  async main(request: Request, response: Response) {
+    const ip =
+      request.headers['x-real-ip'] ||
+      request.headers['x-forwarded-for'] ||
+      request.socket.remoteAddress ||
+      '';
+
+    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+    const location = await getLocation(ipAddress);
+
+    const requests = await this.prisma.requests.findFirst({
+      where: {
+        ip: ipAddress,
+      },
+    });
+
+    const requestsCount = await this.prisma.requests.count({
+      where: {
+        ip: ipAddress,
+      },
+    });
+
+    const data = {
+      ip: ipAddress,
+      location,
+      lastVisit: new Date(),
+      count: requestsCount + 1,
+    };
+
+    if (requests) {
+      await this.prisma.requests.update({
+        where: {
+          id: requests.id,
+        },
+        data,
+      });
+    } else {
+      await this.prisma.requests.create({
+        data,
+      });
+    }
+
+    try {
+      return response.status(200).json({
+        message: 'Success ✅',
+      });
+    } catch (e) {
+      console.error(e);
+      throw new Error(e.message);
+    }
+  }
 
   async register(dto: RegisterDto) {
     const user = await this.usersService.createUser(dto);

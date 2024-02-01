@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 
 async function start() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

@@ -21,8 +21,6 @@ import {
 } from './dto';
 import { Request, Response } from 'express';
 
-import { getLocation } from '../../utils/location';
-
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -31,21 +29,7 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async main(@Req() request: Request, @Res() response: Response) {
-    const ip =
-      request.headers['x-real-ip'] ||
-      request.headers['x-forwarded-for'] ||
-      request.socket.remoteAddress ||
-      '';
-
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
-    const location = await getLocation(ipAddress);
-
-    return response.status(HttpStatus.OK).json({
-      ip: ipAddress,
-      location,
-      statusCode: HttpStatus.OK,
-      message: 'SUCCESS ✅',
-    });
+    return await this.authService.main(request, response);
   }
 
   @Public()

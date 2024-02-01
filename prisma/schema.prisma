@@ -25,11 +25,21 @@ model User {
   password  String
 
   resetPasswordToken String?
-  verificationToken   String?
+  verificationToken  String?
 
   isActive   Boolean @default(true)
   isVerified Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Requests {
+  id Int @id @default(autoincrement())
+
+  ip        String
+  location  Json?
+  lastVisit DateTime
+
+  count Int @default(0)
 }
