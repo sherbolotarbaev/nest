@@ -39,13 +39,7 @@ export class AuthService {
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
     const location = await getLocation(ipAddress);
 
-    const requests = await this.prisma.requests.findFirst({
-      where: {
-        ip: ipAddress,
-      },
-    });
-
-    const requestsCount = await this.prisma.requests.count({
+    const requests = await this.prisma.requests.findMany({
       where: {
         ip: ipAddress,
       },
@@ -55,13 +49,13 @@ export class AuthService {
       ip: ipAddress,
       location,
       lastVisit: new Date(),
-      count: requestsCount + 1,
+      count: requests.length,
     };
 
-    if (requests) {
+    if (requests && requests.length > 0) {
       await this.prisma.requests.update({
         where: {
-          id: requests.id,
+          id: requests[requests.length - 1].id,
         },
         data,
       });
