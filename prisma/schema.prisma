@@ -40,6 +40,4 @@ model Requests {
   ip        String
   location  Json?
   lastVisit DateTime
-
-  count Int @default(0)
 }
