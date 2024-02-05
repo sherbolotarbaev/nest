@@ -64,15 +64,35 @@ export class AuthService {
       });
     }
 
-    const requestsToServer = await this.prisma.requests.count();
-
     try {
-      return response.status(200).json({
-        message: 'Nest.js server by Sher 🦾',
-        status: 'OK',
-        statusCode: 200,
-        requestsToServer,
-      });
+      return response.status(200).send(
+        `
+        <style>
+          body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+            text-align: center;
+            margin: 50px;
+          }
+      
+          h2 {
+            color: #007bff;
+            font-size: 2em;
+            margin-bottom: 20px;
+          }
+      
+          span {
+            font-size: 1.2em;
+            color: #6c757d;
+          }
+        </style>
+
+        <h2>Hello there! It looks like you're accessing our server from ${location.city}, ${location.country}. <br /> Nice choice! 😎</h1>
+
+        <span>(Crafted with ❤️ using Nest.js 🪄)</span>
+          `,
+      );
     } catch (e) {
       console.error(e);
       throw new Error(e.message);
