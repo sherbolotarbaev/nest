@@ -39,7 +39,7 @@ export class AuthService {
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
     const location = await getLocation(ipAddress);
 
-    const requests = await this.prisma.requests.findFirst({
+    const existRequests = await this.prisma.requests.findFirst({
       where: {
         ip: ipAddress,
       },
@@ -51,10 +51,10 @@ export class AuthService {
       lastVisit: new Date(),
     };
 
-    if (requests) {
+    if (existRequests) {
       await this.prisma.requests.update({
         where: {
-          id: requests.id,
+          id: existRequests.id,
         },
         data,
       });
@@ -64,9 +64,14 @@ export class AuthService {
       });
     }
 
+    const requestsToServer = await this.prisma.requests.count();
+
     try {
       return response.status(200).json({
-        message: 'Success ✅',
+        message: 'Nest.js server by Sher 🦾',
+        status: 'OK',
+        statusCode: 200,
+        requestsToServer,
       });
     } catch (e) {
       console.error(e);
