@@ -73,25 +73,38 @@ export class AuthService {
             background-color: #f8f9fa;
             color: #495057;
             text-align: center;
-            margin: 50px;
+            margin: 10%;
           }
-      
+
           h2 {
-            color: #007bff;
-            font-size: 2em;
-            margin-bottom: 20px;
+            @apply text-blue-500 text-3xl mb-4;
           }
-      
+
           span {
-            font-size: 1.2em;
-            color: #6c757d;
+            @apply text-gray-600 text-lg;
+          }
+
+          @media (max-width: 768px) {
+            body {
+              margin: 5%;
+            }
+
+            h2 {
+              @apply text-2xl;
+            }
+          }
+
+          @media (max-width: 480px) {
+            h2 {
+              @apply text-xl;
+            }
           }
         </style>
 
-        <h2>Hello there! It looks like you're accessing our server from ${location.city}, ${location.country}. <br /> Nice choice! 😎</h1>
+        <h2>Hello there! It looks like you're accessing our server from ${location.city}, ${location.country}. <br /> Nice choice! 😎</h2>
 
         <span>(Crafted with ❤️ using Nest.js 🪄)</span>
-          `,
+        `,
       );
     } catch (e) {
       console.error(e);
