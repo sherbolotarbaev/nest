@@ -1,4 +1,4 @@
-import { Public } from '@auth/common';
+import { Public } from './modules/auth/common';
 import {
   Controller,
   Get,
