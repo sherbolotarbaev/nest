@@ -6,8 +6,6 @@ import {
   HttpStatus,
   Patch,
   Post,
-  Req,
-  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public, UserId } from './common';
@@ -19,18 +17,10 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from './dto';
-import { Request, Response } from 'express';
 
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
-
-  @Public()
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  async main(@Req() request: Request, @Res() response: Response) {
-    return await this.authService.main(request, response);
-  }
 
   @Public()
   @Post('register')

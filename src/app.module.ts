@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     SupabaseModule,
     UploadModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,

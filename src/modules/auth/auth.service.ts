@@ -17,8 +17,6 @@ import { compare, hash } from '../../utils/bcrypt';
 import { JwtService } from '../jwt/jwt.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
-import { Request, Response } from 'express';
-import { getLocation } from '../../utils/location';
 
 @Injectable()
 export class AuthService {
@@ -28,89 +26,6 @@ export class AuthService {
     private prisma: PrismaService,
     private mailerService: MailerService,
   ) {}
-
-  async main(request: Request, response: Response) {
-    const ip =
-      request.headers['x-real-ip'] ||
-      request.headers['x-forwarded-for'] ||
-      request.socket.remoteAddress ||
-      '';
-
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
-    const location = await getLocation(ipAddress);
-
-    const existRequests = await this.prisma.requests.findFirst({
-      where: {
-        ip: ipAddress,
-      },
-    });
-
-    const data = {
-      ip: ipAddress,
-      location,
-      lastVisit: new Date(),
-    };
-
-    if (existRequests) {
-      await this.prisma.requests.update({
-        where: {
-          id: existRequests.id,
-        },
-        data,
-      });
-    } else {
-      await this.prisma.requests.create({
-        data,
-      });
-    }
-
-    try {
-      return response.status(200).send(
-        `
-        <style>
-          body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #495057;
-            text-align: center;
-            margin: 10%;
-          }
-
-          h2 {
-            @apply text-blue-500 text-3xl mb-4;
-          }
-
-          span {
-            @apply text-gray-600 text-lg;
-          }
-
-          @media (max-width: 768px) {
-            body {
-              margin: 5%;
-            }
-
-            h2 {
-              @apply text-2xl;
-            }
-          }
-
-          @media (max-width: 480px) {
-            h2 {
-              @apply text-xl;
-            }
-          }
-        </style>
-
-        <h2>Hello there! It looks like you're accessing our server from ${location.city}, ${location.country}. <br /> Nice choice! 😎</h2>
-
-        <span>(Crafted with ❤️ using Nest.js 🪄)</span>
-        `,
-      );
-    } catch (e) {
-      console.error(e);
-      throw new Error(e.message);
-    }
-  }
 
   async register(dto: RegisterDto) {
     const user = await this.usersService.createUser(dto);
