@@ -7,10 +7,9 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 async function start() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    logger: new Logger(),
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 888;
+  const logger = new Logger('NestJsApplication');
 
   app.use(helmet());
 
@@ -33,14 +32,15 @@ async function start() {
   app.use(
     bodyParser.urlencoded({
       extended: true,
+      limit: '10mb',
     }),
   );
 
   try {
     await app.listen(port);
-    Logger.log(`Server is running on: http://localhost:${port} ⚡️`);
+    logger.log(`Server is running on: http://localhost:${port} ⚡️`);
   } catch (e: any) {
-    Logger.error(e);
+    logger.error(e);
     process.exit(1);
   }
 }
