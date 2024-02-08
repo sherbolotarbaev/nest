@@ -8,10 +8,16 @@ import { JwtPayload } from '../interface';
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private usersService: UsersService) {
     const options: StrategyOptions = {
-      // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          return request.cookies['token'];
+          const authorizationHeader = request.headers.authorization;
+          const cookieToken = request.cookies['token'];
+
+          if (authorizationHeader && authorizationHeader.startsWith('Bearer')) {
+            return authorizationHeader.slice(7);
+          }
+
+          return cookieToken;
         },
       ]),
       ignoreExpiration: false,
