@@ -7,7 +7,7 @@ export class JwtService extends NestJwtService {
     super();
   }
 
-  async generateToken(userId: number): Promise<string> {
+  async generateToken(userId: number) {
     return this.signAsync(
       { id: userId } as object,
       {
@@ -17,7 +17,7 @@ export class JwtService extends NestJwtService {
     );
   }
 
-  async generateResetPasswordSecret(userId: number): Promise<string> {
+  async generateResetPasswordSecret(userId: number) {
     const token = await this.signAsync({ id: userId }, {
       secret: process.env.JWT_RESET_PASSWORD_SECRET,
       expiresIn: 60 * 2, // 2 minutes

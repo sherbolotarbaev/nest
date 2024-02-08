@@ -6,7 +6,7 @@ import { JwtPayload } from '../interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private usersService: UsersService) {
+  constructor(private readonly usersService: UsersService) {
     const options: StrategyOptions = {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {

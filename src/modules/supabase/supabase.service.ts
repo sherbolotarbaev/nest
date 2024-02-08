@@ -29,20 +29,13 @@ export class SupabaseService {
     });
   }
 
-  private generateUniqueFileName(
-    userId: number,
-    originalFileName: string,
-  ): string {
+  private generateUniqueFileName(userId: number, originalFileName: string) {
     const timestamp = Date.now();
     const fileExtension = originalFileName.split('.').pop();
     return `user-${userId}-photo-${timestamp}.${fileExtension}`;
   }
 
-  private async uploadFile(
-    bucket: string,
-    filename: string,
-    buffer: Buffer,
-  ): Promise<string> {
+  private async uploadFile(bucket: string, filename: string, buffer: Buffer) {
     try {
       const { data } = await this.supabase.storage
         .from(bucket)
@@ -55,10 +48,7 @@ export class SupabaseService {
     }
   }
 
-  async uploadPhoto(
-    userId: number,
-    file: Express.Multer.File,
-  ): Promise<string> {
+  async uploadPhoto(userId: number, file: Express.Multer.File) {
     const maxSize = 15 * 1024 * 1024; // 15 MB
 
     if (file.size > maxSize) {

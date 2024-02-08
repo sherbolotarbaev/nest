@@ -12,7 +12,7 @@ import { UploadService } from './upload.service';
 
 @Controller('upload')
 export class UploadController {
-  constructor(private uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) {}
 
   @Put('photo')
   @HttpCode(HttpStatus.OK)

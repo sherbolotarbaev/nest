@@ -12,10 +12,7 @@ import { hash } from '../../utils/bcrypt';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getUsers(
-    userId: number,
-    query: string,
-  ): Promise<{ count: number; users: User[] }> {
+  async getUsers(userId: number, query: string) {
     const user = await this.findById(userId);
 
     if (user.role === 'USER') {
@@ -70,7 +67,7 @@ export class UsersService {
     }
   }
 
-  async getUser(userId: number, username: string): Promise<User> {
+  async getUser(userId: number, username: string) {
     const user = await this.findById(userId);
 
     if (user.role === 'USER') {
@@ -92,10 +89,7 @@ export class UsersService {
     }
   }
 
-  async deleteUser(
-    userId: number,
-    username: string,
-  ): Promise<{ success: boolean }> {
+  async deleteUser(userId: number, username: string) {
     const user = await this.findById(userId);
 
     if (user.role === 'USER') {
@@ -131,12 +125,7 @@ export class UsersService {
     }
   }
 
-  async createUser({
-    firstName,
-    lastName,
-    email,
-    password,
-  }: CreateUserDto): Promise<User> {
+  async createUser({ firstName, lastName, email, password }: CreateUserDto) {
     const existUser = await this.prisma.user.findUnique({
       where: {
         email: email.toLowerCase(),
@@ -170,7 +159,7 @@ export class UsersService {
     }
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: number) {
     const user = await this.prisma.user.findFirst({
       where: {
         id,
@@ -193,7 +182,7 @@ export class UsersService {
     }
   }
 
-  async findByEmailOrUsername(emailOrUsername: string): Promise<User> {
+  async findByEmailOrUsername(emailOrUsername: string) {
     const user = await this.prisma.user.findFirst({
       where: {
         OR: [
@@ -219,7 +208,7 @@ export class UsersService {
     }
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: email.toLowerCase(),
@@ -242,7 +231,7 @@ export class UsersService {
     }
   }
 
-  async findByUsername(username: string): Promise<User> {
+  async findByUsername(username: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         username: username.toLowerCase(),
@@ -265,7 +254,7 @@ export class UsersService {
     }
   }
 
-  private async generateUniqueUsername(email: string): Promise<string> {
+  private async generateUniqueUsername(email: string) {
     let username = email.toLowerCase().split('@')[0].trim();
 
     const existUsername = await this.prisma.user.findUnique({
