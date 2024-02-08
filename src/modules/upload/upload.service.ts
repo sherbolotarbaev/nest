@@ -10,9 +10,9 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class UploadService {
   constructor(
-    private usersService: UsersService,
-    private supabaseService: SupabaseService,
-    private prisma: PrismaService,
+    private readonly usersService: UsersService,
+    private readonly supabaseService: SupabaseService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async uploadPhoto(userId: number, file: Express.Multer.File) {

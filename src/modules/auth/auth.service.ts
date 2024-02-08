@@ -21,10 +21,10 @@ import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwt: JwtService,
-    private prisma: PrismaService,
-    private mailerService: MailerService,
+    private readonly usersService: UsersService,
+    private readonly jwt: JwtService,
+    private readonly prisma: PrismaService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async register(dto: RegisterDto) {
