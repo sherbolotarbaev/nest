@@ -4,17 +4,21 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 async function start() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new Logger(),
+  });
   const port = process.env.PORT || 888;
 
-  const logger = new Logger('NestApplication');
+  app.use(helmet());
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      disableErrorMessages: true,
     }),
   );
 
@@ -34,9 +38,9 @@ async function start() {
 
   try {
     await app.listen(port);
-    logger.log(`Server is running on: http://localhost:${port} ⚡️`);
+    Logger.log(`Server is running on: http://localhost:${port} ⚡️`);
   } catch (e: any) {
-    console.error(e);
+    Logger.error(e);
     process.exit(1);
   }
 }
