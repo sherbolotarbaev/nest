@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { OthersService } from './others.service';
 import { SendEmailOtpDto, CheckEmailOtpDto, CheckStatusDto } from './dto';
-import { Public } from '@auth/common';
+import { Public } from '../auth/common';
 
 @Controller('others')
 export class OthersController {
