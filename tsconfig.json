@@ -27,7 +27,8 @@
       "@jwt": ["src/modules/jwt"],
       "@jwt/*": ["src/modules/jwt/*"],
       "@upload": ["src/modules/upload"],
-      "@upload/*": ["src/modules/upload/*"]
+      "@upload/*": ["src/modules/upload/*"],
+      "@others/*": ["src/modules/others/*"]
     }
   }
 }

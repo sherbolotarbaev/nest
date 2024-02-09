@@ -7,6 +7,7 @@ import {
   JwtModule,
   SupabaseModule,
   UploadModule,
+  OthersModule,
 } from './modules';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/common';
@@ -39,6 +40,7 @@ import { AppController } from './app.controller';
     JwtModule,
     SupabaseModule,
     UploadModule,
+    OthersModule,
   ],
   controllers: [AppController],
   providers: [

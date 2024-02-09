@@ -21,8 +21,32 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "EmailOtp" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "otp" TEXT NOT NULL,
+    "expires" INTEGER NOT NULL,
+    "isVerified" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "EmailOtp_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Requests" (
+    "id" SERIAL NOT NULL,
+    "ip" TEXT NOT NULL,
+    "location" JSONB,
+    "lastVisit" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Requests_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EmailOtp_email_key" ON "EmailOtp"("email");

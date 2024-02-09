@@ -17,7 +17,6 @@ async function start() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      disableErrorMessages: true,
     }),
   );
 

@@ -34,6 +34,17 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model EmailOtp {
+  id Int @id @default(autoincrement())
+
+  email String @unique
+  otp   String
+
+  expires Int
+
+  isVerified Boolean @default(false)
+}
+
 model Requests {
   id Int @id @default(autoincrement())
 
