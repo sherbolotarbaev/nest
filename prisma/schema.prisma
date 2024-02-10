@@ -43,6 +43,8 @@ model EmailOtp {
   expires Int
 
   isVerified Boolean @default(false)
+
+  createdAt DateTime @default(now())
 }
 
 model Requests {

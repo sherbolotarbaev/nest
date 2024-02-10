@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { SendEmailOtpDto, CheckStatusDto, CheckEmailOtpDto } from './dto';
+import { SendEmailOtpDto, CheckEmailOtpDto, CheckStatusDto } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { UsersService } from '../users/users.service';
+import { JwtService } from '../jwt/jwt.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { compare, hash } from '../../utils/bcrypt';
 import moment from 'moment';
@@ -9,22 +11,13 @@ import moment from 'moment';
 export class OthersService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly usersService: UsersService,
+    private readonly jwt: JwtService,
     private readonly mailerService: MailerService,
   ) {}
 
   async sendEmailOtp({ email }: SendEmailOtpDto) {
-    const user = await this.prisma.emailOtp.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (user && user.isVerified) {
-      return {
-        verified: true,
-        message: 'User already verified!',
-      };
-    }
+    const user = await this.usersService.findByEmail(email);
 
     const newOtp = await this.generateOtp();
     const otpHash = await hash(newOtp);
@@ -32,12 +25,16 @@ export class OthersService {
 
     await Promise.all([
       this.prisma.emailOtp.upsert({
-        where: { email },
-        update: { otp: otpHash, expires: expirationTime },
-        create: { email, otp: otpHash, expires: expirationTime },
+        where: { email: user.email },
+        update: {
+          otp: otpHash,
+          expires: expirationTime,
+          createdAt: new Date(),
+        },
+        create: { email: user.email, otp: otpHash, expires: expirationTime },
       }),
       this.mailerService.sendMail({
-        to: email,
+        to: user.email,
         from: process.env.MAILER_USER,
         subject: 'Email Verification OTP',
         html: `
@@ -48,10 +45,7 @@ export class OthersService {
     ]);
 
     try {
-      return {
-        verified: false,
-        message: 'Email verification OTP successfully sent!',
-      };
+      return { success: true };
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);
@@ -59,44 +53,52 @@ export class OthersService {
   }
 
   async checkEmailOtp({ email, otp }: CheckEmailOtpDto) {
-    const user = await this.getExistingUser(email);
+    const user = await this.usersService.findByEmail(email);
 
-    if (user.isVerified) {
-      return {
-        verified: true,
-        message: 'User already verified!',
-      };
-    }
+    const emailOtp = await this.prisma.emailOtp.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
 
-    const comparedOtp = await compare(otp, user.otp);
+    const comparedOtp = await compare(otp, emailOtp.otp);
     if (!comparedOtp) {
       throw new BadRequestException('Invalid verification OTP');
     }
 
-    if (user.expires < moment().unix()) {
+    if (emailOtp.expires < moment().unix()) {
       throw new BadRequestException('Verification OTP has expired');
     }
 
-    await this.prisma.emailOtp.update({
-      where: { email: user.email },
-      data: { isVerified: true },
-    });
-
-    return {
-      verified: true,
-      email: user.email,
-      message: 'User successfully verified!',
-    };
+    try {
+      return this.jwt.generateToken(user.id);
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
   }
 
   async checkStatus({ email }: CheckStatusDto) {
-    const user = await this.getExistingUser(email);
+    const user = await this.usersService.findByEmail(email);
 
-    if (user && user.isVerified) {
-      return { verified: true };
+    const emailOtp = await this.prisma.emailOtp.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (emailOtp.expires < moment().unix()) {
+      throw new BadRequestException('Verification OTP has expired');
     }
 
-    return { verified: false };
+    try {
+      return {
+        verified: emailOtp.isVerified,
+      };
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
   }
 
   private async generateOtp() {
@@ -111,19 +113,5 @@ export class OthersService {
     const expirationTime = moment().add(5, 'minutes').unix();
 
     return expirationTime;
-  }
-
-  private async getExistingUser(email: string) {
-    const user = await this.prisma.emailOtp.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      throw new BadRequestException('User not found');
-    }
-
-    return user;
   }
 }
