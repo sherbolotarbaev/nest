@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -7,6 +8,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto';
 import { hash } from '../../utils/bcrypt';
+import { verifyEmail } from '../../utils/email';
 
 @Injectable()
 export class UsersService {
@@ -134,6 +136,12 @@ export class UsersService {
 
     if (existUser) {
       throw new ConflictException('User already exists');
+    }
+
+    const isEmailValid = await verifyEmail(email.toLowerCase());
+
+    if (!isEmailValid) {
+      throw new BadRequestException('Your email is not valid');
     }
 
     try {
