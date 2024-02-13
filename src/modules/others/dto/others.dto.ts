@@ -27,3 +27,21 @@ export class CheckEmailOtpDto {
 }
 
 export class CheckStatusDto extends SendEmailOtpDto {}
+
+export class SendMessageDto {
+  @IsNotEmpty({ message: 'Full name cannot be empty' })
+  @IsString({ message: 'Full name must be a string' })
+  @MinLength(5, { message: 'Full name must be at least 5 characters long' })
+  @MaxLength(128, { message: 'Full name cannot be longer than 128 characters' })
+  fullName: string;
+
+  @IsNotEmpty({ message: 'Email cannot be empty' })
+  @IsEmail({}, { message: 'Invalid email format' })
+  email: string;
+
+  @IsNotEmpty({ message: 'Message cannot be empty' })
+  @IsString({ message: 'Message must be a string' })
+  @MinLength(5, { message: 'Message must be at least 5 characters long' })
+  @MaxLength(500, { message: 'Message cannot be longer than 500 characters' })
+  message: string;
+}

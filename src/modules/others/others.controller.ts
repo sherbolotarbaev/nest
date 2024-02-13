@@ -1,7 +1,20 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { OthersService } from './others.service';
-import { SendEmailOtpDto, CheckEmailOtpDto, CheckStatusDto } from './dto';
+import {
+  SendEmailOtpDto,
+  CheckEmailOtpDto,
+  CheckStatusDto,
+  SendMessageDto,
+} from './dto';
 import { Public } from '../auth/common';
+import { Request } from 'express';
 
 @Controller('others')
 export class OthersController {
@@ -26,5 +39,12 @@ export class OthersController {
   @HttpCode(HttpStatus.OK)
   async checkStatus(@Body() dto: CheckStatusDto) {
     return await this.othersService.checkStatus(dto);
+  }
+
+  @Public()
+  @Post('/message')
+  @HttpCode(HttpStatus.OK)
+  async sendMessage(@Req() request: Request, @Body() dto: SendMessageDto) {
+    return await this.othersService.sendMessage(request, dto);
   }
 }
