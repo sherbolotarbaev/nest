@@ -125,6 +125,7 @@ export class OthersService {
       request.headers['x-forwarded-for'] ||
       request.socket.remoteAddress ||
       '';
+
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
     const location = await getLocation(ipAddress);
 
@@ -133,7 +134,7 @@ export class OthersService {
       msg += `👤  full name: <b>${fullName}</b>\n`;
       msg += `📪  email: <b>${email}</b>\n`;
       msg += `✉️  message: <b>${message}</b>\n`;
-      msg += `📍  location: <b>${location.city}, ${location.region}, ${location.country}</b>\n`;
+      msg += `📍  location: <b>${location.city}, ${location.country}</b>\n`;
       msg += `⏱️  timezone: <b>${location.timezone}</b>`;
 
       return msg;
