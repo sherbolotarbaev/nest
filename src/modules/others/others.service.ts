@@ -125,7 +125,6 @@ export class OthersService {
       request.headers['x-forwarded-for'] ||
       request.socket.remoteAddress ||
       '';
-
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
     const location = await getLocation(ipAddress);
 
