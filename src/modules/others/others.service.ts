@@ -129,13 +129,16 @@ export class OthersService {
     const ipAddress = Array.isArray(ip) ? ip[0] : ip;
     const location = await getLocation(ipAddress);
 
+    const device = request.headers['user-agent'];
+
     const template = () => {
       let msg = `🌐  IP: <b>${ipAddress}</b>\n`;
       msg += `👤  full name: <b>${fullName}</b>\n`;
       msg += `📪  email: <b>${email}</b>\n`;
       msg += `✉️  message: <b>${message}</b>\n`;
       msg += `📍  location: <b>${location.city}, ${location.country}</b>\n`;
-      msg += `⏱️  timezone: <b>${location.timezone}</b>`;
+      msg += `⏱️  timezone: <b>${location.timezone}</b>\n`;
+      msg += `💻  device: <b>${device}</b>`;
 
       return msg;
     };
