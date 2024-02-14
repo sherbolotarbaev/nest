@@ -138,7 +138,7 @@ export class OthersService {
       msg += `✉️  message: <b>${message}</b>\n`;
       msg += `📍  location: <b>${location.city}, ${location.country}</b>\n`;
       msg += `⏱️  timezone: <b>${location.timezone}</b>\n`;
-      msg += `💻  device: <b>${device}</b>`;
+      msg += `💻  device: <b>${this.getDeviceInfo(device)}</b>`;
 
       return msg;
     };
@@ -173,5 +173,46 @@ export class OthersService {
     const expirationTime = moment().add(5, 'minutes').unix();
 
     return expirationTime;
+  }
+
+  private getDeviceInfo(userAgent: string) {
+    let deviceInfo = 'Unknown';
+    const userAgentLowerCase = userAgent.toLowerCase();
+
+    switch (true) {
+      case userAgentLowerCase.includes('iphone'):
+        const matchIphone = userAgent.match(/iPhone\s(?:OS\s)?([\d_]+)/);
+        if (matchIphone) {
+          deviceInfo = `iPhone ${this.getIOSVersion(matchIphone[1])}`;
+        } else {
+          deviceInfo = 'iPhone';
+        }
+        break;
+      case userAgentLowerCase.includes('android'):
+        const matchAndroid = userAgent.match(/Android\s([\d.]+)/);
+        if (matchAndroid) {
+          deviceInfo = `Android ${matchAndroid[1]}`;
+        } else {
+          deviceInfo = 'Android';
+        }
+        break;
+      case userAgentLowerCase.includes('macintosh'):
+        deviceInfo = 'MacOS';
+        break;
+      case userAgentLowerCase.includes('windows'):
+        deviceInfo = 'Windows';
+        break;
+      case userAgentLowerCase.includes('linux'):
+        deviceInfo = 'Linux';
+        break;
+      default:
+        break;
+    }
+
+    return deviceInfo;
+  }
+
+  private getIOSVersion(versionString: string) {
+    return versionString.replace(/_/g, '.');
   }
 }
