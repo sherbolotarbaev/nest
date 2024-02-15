@@ -161,25 +161,19 @@ export class OthersService {
     }
   }
 
-  async newRequest(request: Request) {
-    const ip =
-      request.headers['x-real-ip'] ||
-      request.headers['x-forwarded-for'] ||
-      request.socket.remoteAddress ||
-      '';
-
-    if (ip === '::1') return;
-
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
-    const location = await getLocation(ipAddress);
-
+  async addViews() {
     try {
-      await this.prisma.request.create({
-        data: {
-          ip: ipAddress,
-          method: 'GET',
-          status: 'SUCCESS',
-          from: `${location.city}, ${location.country}`,
+      await this.prisma.views.upsert({
+        where: {
+          id: 1,
+        },
+        update: {
+          count: {
+            increment: 1,
+          },
+        },
+        create: {
+          count: 1,
         },
       });
 
@@ -190,9 +184,15 @@ export class OthersService {
     }
   }
 
-  async getRequests() {
+  async getViews() {
     try {
-      return (await this.prisma.request.count()) + 1;
+      return (
+        await this.prisma.views.findFirst({
+          where: {
+            id: 1,
+          },
+        })
+      ).count;
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);

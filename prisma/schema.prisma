@@ -61,6 +61,11 @@ model EmailOtp {
   createdAt DateTime @default(now())
 }
 
+model Views {
+  id    Int @id @default(autoincrement())
+  count Int
+}
+
 model Request {
   id Int @id @default(autoincrement())
 

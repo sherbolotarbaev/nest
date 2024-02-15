@@ -50,16 +50,16 @@ export class OthersController {
   }
 
   @Public()
-  @Post('/requests')
+  @Post('/views')
   @HttpCode(HttpStatus.OK)
-  async newRequest(@Req() request: Request) {
-    return await this.othersService.newRequest(request);
+  async addViews() {
+    return await this.othersService.addViews();
   }
 
   @Public()
-  @Get('/requests')
+  @Get('/views')
   @HttpCode(HttpStatus.OK)
-  async getRequests() {
-    return await this.othersService.getRequests();
+  async getViews() {
+    return await this.othersService.getViews();
   }
 }
