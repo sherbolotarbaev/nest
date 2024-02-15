@@ -35,7 +35,7 @@ export class AppController {
     return response.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'OK',
-      views: requests > 0 ? requests + 1 : 0,
+      views: requests + 1,
       sourceCode: 'https://github.com/sherbolotarbaev/nest',
     });
   }
