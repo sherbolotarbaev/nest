@@ -161,6 +161,44 @@ export class OthersService {
     }
   }
 
+  async newRequest(request: Request) {
+    const ip =
+      request.headers['x-real-ip'] ||
+      request.headers['x-forwarded-for'] ||
+      request.socket.remoteAddress ||
+      '';
+
+    if (ip === '::1') return;
+
+    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+    const location = await getLocation(ipAddress);
+
+    try {
+      await this.prisma.request.create({
+        data: {
+          ip: ipAddress,
+          method: 'GET',
+          status: 'SUCCESS',
+          from: `${location.city}, ${location.country}`,
+        },
+      });
+
+      return { success: true };
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
+  }
+
+  async getRequests() {
+    try {
+      return (await this.prisma.request.count()) + 1;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
+  }
+
   private async generateOtp() {
     const otp = Array.from({ length: 6 }, () =>
       Math.floor(Math.random() * 10),

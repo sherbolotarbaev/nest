@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -46,5 +47,19 @@ export class OthersController {
   @HttpCode(HttpStatus.OK)
   async sendMessage(@Req() request: Request, @Body() dto: SendMessageDto) {
     return await this.othersService.sendMessage(request, dto);
+  }
+
+  @Public()
+  @Post('/requests')
+  @HttpCode(HttpStatus.OK)
+  async newRequest(@Req() request: Request) {
+    return await this.othersService.newRequest(request);
+  }
+
+  @Public()
+  @Get('/requests')
+  @HttpCode(HttpStatus.OK)
+  async getRequests() {
+    return await this.othersService.getRequests();
   }
 }
