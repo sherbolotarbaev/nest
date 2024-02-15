@@ -67,7 +67,7 @@ model Request {
   method HttpMethods
   ip     String
   from   String
-  status Status
+  status Status      @default(SUCCESS)
 
   createdAt DateTime @default(now())
 }
