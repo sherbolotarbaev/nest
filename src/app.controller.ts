@@ -8,14 +8,10 @@ import {
   Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { PrismaService } from './modules/prisma/prisma.service';
 import axios from 'axios';
-import { getLocation } from './utils/location';
 
 @Controller()
 export class AppController {
-  constructor(private readonly prisma: PrismaService) {}
-
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -30,29 +26,15 @@ export class AppController {
 
     this.fetchHealTchecks(ipAddress);
 
-    const requests = await this.prisma.request.count();
-
     return response.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'OK',
-      views: requests + 1,
       sourceCode: 'https://github.com/sherbolotarbaev/nest',
     });
   }
 
   private async fetchHealTchecks(ip: string) {
     if (ip === '::1') return;
-
-    const location = await getLocation(ip);
-
-    await this.prisma.request.create({
-      data: {
-        ip,
-        method: 'GET',
-        status: 'SUCCESS',
-        from: `${location.city}, ${location.country}`,
-      },
-    });
 
     try {
       await axios.get(
