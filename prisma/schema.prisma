@@ -13,6 +13,20 @@ enum UserRole {
   ADMIN
 }
 
+enum Status {
+  SUCCESS
+  FAILED
+}
+
+enum HttpMethods {
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+  OPTIONS
+}
+
 model User {
   id   Int      @id @default(autoincrement())
   role UserRole @default(USER)
@@ -50,18 +64,10 @@ model EmailOtp {
 model Request {
   id Int @id @default(autoincrement())
 
-  method httpMethods
+  method HttpMethods
   ip     String
   from   String
+  status Status
 
   createdAt DateTime @default(now())
-}
-
-enum httpMethods {
-  GET
-  POST
-  PUT
-  PATCH
-  DELETE
-  OPTIONS
 }

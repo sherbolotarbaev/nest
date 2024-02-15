@@ -2,7 +2,10 @@
 CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
 
 -- CreateEnum
-CREATE TYPE "httpMethods" AS ENUM ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
+CREATE TYPE "Status" AS ENUM ('SUCCESS', 'FAILED');
+
+-- CreateEnum
+CREATE TYPE "HttpMethods" AS ENUM ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -39,9 +42,10 @@ CREATE TABLE "EmailOtp" (
 -- CreateTable
 CREATE TABLE "Request" (
     "id" SERIAL NOT NULL,
-    "method" "httpMethods" NOT NULL,
+    "method" "HttpMethods" NOT NULL,
     "ip" TEXT NOT NULL,
     "from" TEXT NOT NULL,
+    "status" "Status" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Request_pkey" PRIMARY KEY ("id")
