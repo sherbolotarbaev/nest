@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
 
+-- CreateEnum
+CREATE TYPE "httpMethods" AS ENUM ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -34,13 +37,14 @@ CREATE TABLE "EmailOtp" (
 );
 
 -- CreateTable
-CREATE TABLE "Requests" (
+CREATE TABLE "Request" (
     "id" SERIAL NOT NULL,
+    "method" "httpMethods" NOT NULL,
     "ip" TEXT NOT NULL,
-    "location" JSONB,
-    "lastVisit" TIMESTAMP(3) NOT NULL,
+    "from" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Requests_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Request_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

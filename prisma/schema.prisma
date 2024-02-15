@@ -47,10 +47,21 @@ model EmailOtp {
   createdAt DateTime @default(now())
 }
 
-model Requests {
+model Request {
   id Int @id @default(autoincrement())
 
-  ip        String
-  location  Json?
-  lastVisit DateTime
+  method httpMethods
+  ip     String
+  from   String
+
+  createdAt DateTime @default(now())
+}
+
+enum httpMethods {
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+  OPTIONS
 }
