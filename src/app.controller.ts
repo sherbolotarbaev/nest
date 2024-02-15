@@ -35,7 +35,7 @@ export class AppController {
     return response.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'OK',
-      views: requests + 1,
+      views: requests > 0 ? requests + 1 : 0,
       sourceCode: 'https://github.com/sherbolotarbaev/nest',
     });
   }
@@ -49,6 +49,7 @@ export class AppController {
       data: {
         ip,
         method: 'GET',
+        status: 'SUCCESS',
         from: `${location.city}, ${location.country}`,
       },
     });
