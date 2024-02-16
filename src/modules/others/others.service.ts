@@ -14,6 +14,7 @@ import { verifyEmail } from '../../utils/email';
 import { getLocation } from '../../utils/location';
 import { Request } from 'express';
 import moment from 'moment';
+import 'moment-timezone';
 import axios from 'axios';
 
 @Injectable()
@@ -171,11 +172,15 @@ export class OthersService {
           count: {
             increment: 1,
           },
-          lastViewAt: moment().format('DD.MM.YYYY hh:mm:ss A'),
+          lastViewAt: moment()
+            .tz('Asia/Bishkek')
+            .format('DD.MM.YYYY hh:mm:ss A'),
         },
         create: {
           count: 1,
-          lastViewAt: moment().format('DD.MM.YYYY hh:mm:ss A'),
+          lastViewAt: moment()
+            .tz('Asia/Bishkek')
+            .format('DD.MM.YYYY hh:mm:ss A'),
         },
       });
 
