@@ -177,22 +177,9 @@ export class OthersService {
         },
       });
 
-      return { success: true };
-    } catch (e: any) {
-      console.error(e);
-      throw new Error(e.message);
-    }
-  }
+      const { count } = await this.prisma.views.findFirst({ where: { id: 1 } });
 
-  async getViews() {
-    try {
-      return (
-        await this.prisma.views.findFirst({
-          where: {
-            id: 1,
-          },
-        })
-      ).count;
+      return count;
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);

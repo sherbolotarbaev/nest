@@ -55,11 +55,4 @@ export class OthersController {
   async addViews() {
     return await this.othersService.addViews();
   }
-
-  @Public()
-  @Get('/views')
-  @HttpCode(HttpStatus.OK)
-  async getViews() {
-    return await this.othersService.getViews();
-  }
 }
