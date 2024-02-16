@@ -62,8 +62,9 @@ model EmailOtp {
 }
 
 model Views {
-  id    Int @id @default(autoincrement())
-  count Int
+  id         Int    @id @default(autoincrement())
+  count      Int
+  lastViewAt String
 }
 
 model Request {

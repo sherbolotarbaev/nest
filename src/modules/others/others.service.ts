@@ -171,9 +171,11 @@ export class OthersService {
           count: {
             increment: 1,
           },
+          lastViewAt: moment().format('DD.MM.YYYY hh:mm:ss A'),
         },
         create: {
           count: 1,
+          lastViewAt: moment().format('DD.MM.YYYY hh:mm:ss A'),
         },
       });
 
