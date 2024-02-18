@@ -59,6 +59,13 @@ export class SupabaseService {
     return this.uploadFile('/photos', filename, file.buffer);
   }
 
+  async uploadAudio(buffer: Buffer) {
+    let num = (Math.random() * 100000000).toFixed(0);
+    const filename = `audio-${num}.mp3`;
+
+    return this.uploadFile('/audios', filename, buffer);
+  }
+
   async getUrl(bucket: string, filename: string) {
     if (!filename) return '';
     return `${process.env.SUPABASE_URL}/storage/v1/object/public${bucket}/${filename}`;

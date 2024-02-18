@@ -17,6 +17,17 @@ type User = {
   updatedAt: Date;
 };
 
+type Message = {
+  id: number;
+  userId: number;
+  user: User;
+  text: string;
+  ai?: boolean;
+  audioSource?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type LocationData = {
   city: string;
   region: string;

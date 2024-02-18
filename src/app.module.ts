@@ -8,6 +8,7 @@ import {
   SupabaseModule,
   UploadModule,
   OthersModule,
+  ChatGptModule,
 } from './modules';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/common';
@@ -41,6 +42,7 @@ import { AppController } from './app.controller';
     SupabaseModule,
     UploadModule,
     OthersModule,
+    ChatGptModule,
   ],
   controllers: [AppController],
   providers: [
