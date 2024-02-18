@@ -17,6 +17,7 @@ import { compare, hash } from '../../utils/bcrypt';
 import { JwtService } from '../jwt/jwt.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -208,12 +209,12 @@ export class AuthService {
     }
   }
 
-  async generateVerificationCode() {
+  private async generateVerificationCode() {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     return code;
   }
 
-  async sendVerificationCode(
+  private async sendVerificationCode(
     userId: number,
     userEmail: string,
     userName: string,
@@ -240,5 +241,14 @@ export class AuthService {
         `,
       }),
     ]);
+  }
+
+  private async setCookie(response: Response, token: string) {
+    return response.cookie('token', token, {
+      maxAge: 60 * 30 * 1000, // 30 minutes
+      secure: true,
+      sameSite: 'none',
+      path: '/',
+    });
   }
 }
