@@ -31,17 +31,20 @@ export class OthersService {
 
     const newOtp = await this.generateOtp();
     const otpHash = await hash(newOtp);
-    const expirationTime = await this.generateExpirationTime();
 
     await Promise.all([
       this.prisma.emailOtp.upsert({
         where: { email: user.email },
         update: {
           otp: otpHash,
-          expires: expirationTime,
+          expires: moment().add(5, 'minutes').unix(),
           createdAt: new Date(),
         },
-        create: { email: user.email, otp: otpHash, expires: expirationTime },
+        create: {
+          email: user.email,
+          otp: otpHash,
+          expires: moment().add(5, 'minutes').unix(),
+        },
       }),
       this.mailerService.sendMail({
         to: user.email,
@@ -199,12 +202,6 @@ export class OthersService {
     ).join('');
 
     return otp;
-  }
-
-  private async generateExpirationTime() {
-    const expirationTime = moment().add(5, 'minutes').unix();
-
-    return expirationTime;
   }
 
   private getDeviceInfo(userAgent: string) {

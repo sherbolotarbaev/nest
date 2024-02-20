@@ -5,6 +5,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import moment from 'moment';
 
 async function start() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -35,9 +36,11 @@ async function start() {
     }),
   );
 
+  const time = moment().format('HH:mm:ss:ms');
+
   try {
     await app.listen(port);
-    logger.log(`Server is running on: http://localhost:${port} ⚡️`);
+    logger.log(`Server is running on: http://localhost:${port} ⚡️${time}`);
   } catch (e: any) {
     logger.error(e);
     process.exit(1);
