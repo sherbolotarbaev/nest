@@ -32,7 +32,7 @@ export class AuthService {
     const user = await this.usersService.createUser(dto);
     const token = await this.jwt.generateToken(user.id);
 
-    await this.sendVerificationCode(user.id, user.email, user.firstName);
+    this.sendVerificationCode(user.id, user.email, user.firstName);
 
     try {
       return {
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     if (!user.isVerified || !user.verificationToken) {
-      await this.sendVerificationCode(user.id, user.email, user.firstName);
+      this.sendVerificationCode(user.id, user.email, user.firstName);
     }
 
     const token = await this.jwt.generateToken(user.id);
