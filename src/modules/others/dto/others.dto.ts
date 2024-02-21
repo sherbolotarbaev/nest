@@ -45,3 +45,9 @@ export class SendMessageDto {
   @MaxLength(500, { message: 'Message cannot be longer than 500 characters' })
   message: string;
 }
+
+export class AddConnectionsDto {
+  @IsNotEmpty({ message: 'Connection cannot be empty' })
+  @IsString({ message: 'Connection must be a string' })
+  connection: string;
+}

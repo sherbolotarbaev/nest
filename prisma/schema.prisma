@@ -13,20 +13,6 @@ enum UserRole {
   ADMIN
 }
 
-enum Status {
-  SUCCESS
-  FAILED
-}
-
-enum HttpMethods {
-  GET
-  POST
-  PUT
-  PATCH
-  DELETE
-  OPTIONS
-}
-
 model User {
   id   Int      @id @default(autoincrement())
   role UserRole @default(USER)
@@ -67,13 +53,10 @@ model Views {
   lastViewAt String
 }
 
-model Request {
+model Connections {
   id Int @id @default(autoincrement())
 
-  method HttpMethods
-  ip     String
-  from   String
-  status Status      @default(SUCCESS)
+  connection String
 
   createdAt DateTime @default(now())
 }

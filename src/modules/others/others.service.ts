@@ -4,6 +4,7 @@ import {
   CheckEmailOtpDto,
   CheckStatusDto,
   SendMessageDto,
+  AddConnectionsDto,
 } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
@@ -190,6 +191,31 @@ export class OthersService {
       const { count } = await this.prisma.views.findFirst({ where: { id: 1 } });
 
       return count;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
+  }
+
+  async addConnections({ connection }: AddConnectionsDto) {
+    const existingConnection = await this.prisma.connections.findFirst({
+      where: {
+        connection,
+      },
+    });
+
+    if (existingConnection) {
+      return { success: true };
+    }
+
+    try {
+      await this.prisma.connections.create({
+        data: {
+          connection,
+        },
+      });
+
+      return { success: true };
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);
