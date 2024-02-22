@@ -48,6 +48,7 @@ export class ChatGptController {
   ) {
     response.set({
       'Content-Type': 'text/event-stream',
+      'X-Content-Type-Options': 'nosniff',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
     });
