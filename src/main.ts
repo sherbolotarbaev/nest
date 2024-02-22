@@ -22,7 +22,7 @@ async function start() {
   );
 
   app.enableCors({
-    origin: '*',
+    origin: ['http://localhost:3000', `${process.env.FRONTEND_BASE_URL}`],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
