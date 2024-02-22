@@ -29,10 +29,15 @@ export class SupabaseService {
     });
   }
 
-  private generateUniqueFileName(userId: number, originalFileName: string) {
+  private generateUniqueFileName(
+    originalFileName: string,
+    userId?: number | null,
+  ) {
     const timestamp = Date.now();
     const fileExtension = originalFileName.split('.').pop();
-    return `user-${userId}-photo-${timestamp}.${fileExtension}`;
+    return `${
+      userId ? `user-${userId}-` : ''
+    }photo-${timestamp}.${fileExtension}`;
   }
 
   private async uploadFile(bucket: string, filename: string, buffer: Buffer) {
@@ -48,14 +53,14 @@ export class SupabaseService {
     }
   }
 
-  async uploadPhoto(userId: number, file: Express.Multer.File) {
+  async uploadPhoto(file: Express.Multer.File, userId?: number | null) {
     const maxSize = 15 * 1024 * 1024; // 15 MB
 
     if (file.size > maxSize) {
       throw new BadRequestException('File size exceeds the 15 MB limit');
     }
 
-    const filename = this.generateUniqueFileName(userId, file.originalname);
+    const filename = this.generateUniqueFileName(file.originalname, userId);
     return this.uploadFile('/photos', filename, file.buffer);
   }
 

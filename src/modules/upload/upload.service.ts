@@ -33,7 +33,7 @@ export class UploadService {
       throw new BadRequestException('Only image files are allowed');
     }
 
-    const filename = await this.supabaseService.uploadPhoto(user.id, file);
+    const filename = await this.supabaseService.uploadPhoto(file, user.id);
     const url = await this.supabaseService.getUrl('/photos', filename);
 
     const updatedUser = await this.prisma.user.update({
