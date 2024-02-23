@@ -60,7 +60,7 @@ export class ChatGptController {
 
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content ?? '';
-      response.write(content);
+      response.write(`data: ${content}\n\n`);
     }
 
     response.end();
