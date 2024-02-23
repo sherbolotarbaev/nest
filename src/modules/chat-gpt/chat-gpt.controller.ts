@@ -47,10 +47,10 @@ export class ChatGptController {
     @Body() { text }: StreamConversationDto,
   ) {
     response.header({
-      'Content-Type': 'text/event-stream',
-      'X-Content-Type-Options': 'nosniff',
+      // 'Content-Type': 'text/event-stream',
+      // 'X-Content-Type-Options': 'nosniff',
       'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
+      // Connection: 'keep-alive',
     });
 
     const stream = await this.chatGptService.chatGptStreamRequest(
@@ -60,7 +60,7 @@ export class ChatGptController {
 
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content ?? '';
-      response.write(`data: ${content}\n\n`);
+      response.write(content);
     }
 
     response.end();
