@@ -7,6 +7,10 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import moment from 'moment';
 
+export const config = {
+  supportsResponseStreaming: true,
+};
+
 async function start() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 888;
