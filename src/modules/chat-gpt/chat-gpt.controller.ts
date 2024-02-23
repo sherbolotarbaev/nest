@@ -46,7 +46,7 @@ export class ChatGptController {
     @Res() response: Response,
     @Body() { text }: StreamConversationDto,
   ) {
-    response.set({
+    response.header({
       'Content-Type': 'text/event-stream',
       'X-Content-Type-Options': 'nosniff',
       'Cache-Control': 'no-cache',
