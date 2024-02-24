@@ -6,3 +6,4 @@ export * from './supabase/supabase.module';
 export * from './upload/upload.module';
 export * from './others/others.module';
 export * from './chat-gpt/chat-gpt.module'
+export * from './chat/chat.module'

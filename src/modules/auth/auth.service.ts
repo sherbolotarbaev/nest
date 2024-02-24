@@ -89,13 +89,13 @@ export class AuthService {
     const user = await this.usersService.findById(userId);
 
     if (username && username !== user.username) {
-      const existUsername = await this.prisma.user.findUnique({
+      const existingUsername = await this.prisma.user.findUnique({
         where: {
           username: username.toLowerCase(),
         },
       });
 
-      if (existUsername) {
+      if (existingUsername) {
         throw new ConflictException('Username already taken');
       }
     }

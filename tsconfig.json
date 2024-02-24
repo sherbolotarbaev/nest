@@ -29,7 +29,8 @@
       "@upload": ["src/modules/upload"],
       "@upload/*": ["src/modules/upload/*"],
       "@others/*": ["src/modules/others/*"],
-      "@chat-gpt/*": ["src/modules/chat-gpt/*"]
+      "@chat-gpt/*": ["src/modules/chat-gpt/*"],
+      "@chat/*": ["src/modules/chat/*"]
     }
   }
 }

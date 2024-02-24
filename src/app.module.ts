@@ -9,6 +9,7 @@ import {
   UploadModule,
   OthersModule,
   ChatGptModule,
+  ChatModule,
 } from './modules';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/common';
@@ -43,6 +44,7 @@ import { AppController } from './app.controller';
     UploadModule,
     OthersModule,
     ChatGptModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [

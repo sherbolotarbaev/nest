@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -13,7 +12,6 @@ import {
   CheckEmailOtpDto,
   CheckStatusDto,
   SendMessageDto,
-  AddConnectionsDto,
 } from './dto';
 import { Public } from '../auth/common';
 import { Request } from 'express';
@@ -55,12 +53,5 @@ export class OthersController {
   @HttpCode(HttpStatus.OK)
   async addViews() {
     return await this.othersService.addViews();
-  }
-
-  @Public()
-  @Post('connections')
-  @HttpCode(HttpStatus.OK)
-  async addConnections(@Body() dto: AddConnectionsDto) {
-    return await this.othersService.addConnections(dto);
   }
 }
