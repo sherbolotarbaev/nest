@@ -76,6 +76,8 @@ enum ConversationRole {
 }
 
 model Conversation {
+  id Int @id @default(autoincrement())
+
   userId  Int
   chatId  Int
   role    ConversationRole
@@ -85,6 +87,4 @@ model Conversation {
   chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   createdAt DateTime @default(now())
-
-  @@id([userId])
 }

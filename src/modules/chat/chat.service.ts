@@ -19,17 +19,6 @@ export class ChatService {
   async createChat(userId: number, { title }: CreateChatDto) {
     const user = await this.usersService.findById(userId);
 
-    const existingChat = await this.prisma.chat.findFirst({
-      where: {
-        userId: user.id,
-        title: title,
-      },
-    });
-
-    if (existingChat) {
-      throw new ConflictException('Chat already exists');
-    }
-
     const chat = await this.prisma.chat.create({
       data: {
         userId: user.id,
