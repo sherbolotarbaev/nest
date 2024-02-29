@@ -83,6 +83,15 @@ export class OthersService {
       throw new BadRequestException('Verification OTP has expired');
     }
 
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+
     try {
       return this.jwt.generateToken(user.id);
     } catch (e: any) {
