@@ -1,6 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtSignOptions, JwtService as NestJwtService } from '@nestjs/jwt';
 
+import { COOKIE_MAX_AGE } from '../auth/common';
+
 @Injectable()
 export class JwtService extends NestJwtService {
   constructor() {
@@ -10,7 +12,7 @@ export class JwtService extends NestJwtService {
   async generateToken(userId: number) {
     return this.signAsync({ id: userId }, {
       secret: process.env.JWT_SECRET_KEY,
-      expiresIn: 60 * 30, // 30 minutes
+      expiresIn: COOKIE_MAX_AGE,
       algorithm: 'HS384',
     } as JwtSignOptions);
   }

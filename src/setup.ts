@@ -9,6 +9,8 @@ import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 
+import { COOKIE_MAX_AGE } from './modules/auth/common';
+
 export function setup(app: INestApplication): INestApplication {
   app.use(helmet());
 
@@ -49,6 +51,7 @@ export function setup(app: INestApplication): INestApplication {
         signed: true,
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
+        maxAge: COOKIE_MAX_AGE,
       },
     }),
   );

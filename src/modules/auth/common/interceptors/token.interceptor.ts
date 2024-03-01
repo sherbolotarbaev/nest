@@ -10,6 +10,8 @@ import { map } from 'rxjs/operators';
 
 import { JwtService } from '../../../jwt/jwt.service';
 
+import { COOKIE_MAX_AGE } from '..';
+
 @Injectable()
 export class TokenInterceptor implements NestInterceptor {
   constructor(private readonly jwtService: JwtService) {}
@@ -29,6 +31,7 @@ export class TokenInterceptor implements NestInterceptor {
           signed: true,
           sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
+          maxAge: COOKIE_MAX_AGE,
         });
 
         delete user.password;
