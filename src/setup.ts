@@ -9,7 +9,7 @@ import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 
-import { COOKIE_MAX_AGE } from './modules/auth/common';
+import { COOKIE_MAX_AGE } from './modules/auth/common/constants';
 
 export function setup(app: INestApplication): INestApplication {
   app.use(helmet());

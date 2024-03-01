@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtSignOptions, JwtService as NestJwtService } from '@nestjs/jwt';
 
-import { COOKIE_MAX_AGE } from '../auth/common';
+import { COOKIE_MAX_AGE } from '../auth/common/constants';
 
 @Injectable()
 export class JwtService extends NestJwtService {
