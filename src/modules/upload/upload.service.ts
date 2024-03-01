@@ -3,21 +3,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+
 import { SupabaseService } from '../supabase/supabase.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UploadService {
   constructor(
-    private readonly usersService: UsersService,
     private readonly supabaseService: SupabaseService,
     private readonly prisma: PrismaService,
   ) {}
 
-  async uploadPhoto(userId: number, file: Express.Multer.File) {
-    const user = await this.usersService.findById(userId);
-
+  async uploadPhoto(user: User, file: Express.Multer.File) {
     if (!file) {
       throw new NotFoundException('File not found');
     }

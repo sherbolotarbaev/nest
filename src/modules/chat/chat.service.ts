@@ -1,24 +1,20 @@
 import {
   BadRequestException,
-  ConflictException,
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
-import { UsersService } from '../users/users.service';
-import { CreateChatDto, CreateConversationDto } from './dto';
+
 import { USER_ATTEMPTS } from './common';
+
+import { CreateChatDto, CreateConversationDto } from './dto';
 
 @Injectable()
 export class ChatService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async createChat(userId: number, { title }: CreateChatDto) {
-    const user = await this.usersService.findById(userId);
-
+  async createChat(user: User, { title }: CreateChatDto) {
     const chat = await this.prisma.chat.create({
       data: {
         userId: user.id,
@@ -34,9 +30,7 @@ export class ChatService {
     }
   }
 
-  async getChats(userId: number) {
-    const user = await this.usersService.findById(userId);
-
+  async getChats(user: User) {
     const chats = await this.prisma.chat.findMany({
       where: {
         userId: user.id,
@@ -54,11 +48,11 @@ export class ChatService {
     }
   }
 
-  async getChat(chatId: number, userId: number) {
+  async getChat(user: User, chatId: number) {
     const chat = await this.prisma.chat.findFirst({
       where: {
         id: chatId,
-        userId: userId,
+        userId: user.id,
       },
       include: {
         conversations: true,
@@ -82,12 +76,11 @@ export class ChatService {
   }
 
   async createConversation(
-    userId: number,
+    user: User,
     chatId: number,
     { role, content }: CreateConversationDto,
   ) {
-    const user = await this.usersService.findById(userId);
-    const chat = await this.getChat(chatId, user.id);
+    const chat = await this.getChat(user, chatId);
 
     const attempts = USER_ATTEMPTS * 2;
     if (user.role === 'USER' && chat.conversations.length >= attempts) {
@@ -111,9 +104,8 @@ export class ChatService {
     }
   }
 
-  async getConversations(userId: number, chatId: number) {
-    const user = await this.usersService.findById(userId);
-    const chat = await this.getChat(chatId, user.id);
+  async getConversations(user: User, chatId: number) {
+    const chat = await this.getChat(user, chatId);
 
     const conversations = await this.prisma.conversation.findMany({
       where: {

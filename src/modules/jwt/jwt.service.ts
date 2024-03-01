@@ -8,13 +8,11 @@ export class JwtService extends NestJwtService {
   }
 
   async generateToken(userId: number) {
-    return this.signAsync(
-      { id: userId } as object,
-      {
-        secret: process.env.JWT_SECRET_KEY,
-        expiresIn: 60 * 30, // 30 minutes
-      } as JwtSignOptions,
-    );
+    return this.signAsync({ id: userId }, {
+      secret: process.env.JWT_SECRET_KEY,
+      expiresIn: 60 * 30, // 30 minutes
+      algorithm: 'HS384',
+    } as JwtSignOptions);
   }
 
   async generateResetPasswordSecret(userId: number) {

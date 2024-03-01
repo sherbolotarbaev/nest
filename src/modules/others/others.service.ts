@@ -1,18 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { Request } from 'express';
+
+import { PrismaService } from '../prisma/prisma.service';
+import { UsersService } from '../users/users.service';
+import { JwtService } from '../jwt/jwt.service';
+import { MailerService } from '@nestjs-modules/mailer';
+
+import { compare, hash, verifyEmail, getLocation } from '../../utils';
+
 import {
   SendEmailOtpDto,
   CheckEmailOtpDto,
   CheckStatusDto,
   SendMessageDto,
 } from './dto';
-import { PrismaService } from '../prisma/prisma.service';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '../jwt/jwt.service';
-import { MailerService } from '@nestjs-modules/mailer';
-import { compare, hash } from '../../utils/bcrypt';
-import { verifyEmail } from '../../utils/email';
-import { getLocation } from '../../utils/location';
-import { Request } from 'express';
+
 import moment from 'moment';
 import 'moment-timezone';
 import axios from 'axios';

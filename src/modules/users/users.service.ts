@@ -5,18 +5,18 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
+
 import { CreateUserDto } from './dto';
-import { hash } from '../../utils/bcrypt';
-import { verifyEmail } from '../../utils/email';
+
+import { hash, verifyEmail } from '../../utils';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getUsers(userId: number, query: string) {
-    const user = await this.findById(userId);
-
+  async getUsers(user: User, query: string) {
     if (user.role === 'USER') {
       throw new ForbiddenException(
         'You do not have the necessary permission to access users information',
@@ -69,9 +69,7 @@ export class UsersService {
     }
   }
 
-  async getUser(userId: number, username: string) {
-    const user = await this.findById(userId);
-
+  async getUser(user: User, username: string) {
     if (user.role === 'USER') {
       throw new ForbiddenException(
         'You do not have the necessary permission to access user information',
@@ -91,9 +89,7 @@ export class UsersService {
     }
   }
 
-  async deleteUser(userId: number, username: string) {
-    const user = await this.findById(userId);
-
+  async deleteUser(user: User, username: string) {
     if (user.role === 'USER') {
       throw new ForbiddenException(
         'You do not have the necessary permission to delete a user',
@@ -158,7 +154,7 @@ export class UsersService {
         },
       });
 
-      user.password = undefined;
+      delete user.password;
 
       return user;
     } catch (e: any) {

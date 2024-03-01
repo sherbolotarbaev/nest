@@ -1,4 +1,5 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+
 import OpenAIApi from 'openai';
 import {
   ChatCompletion,
@@ -7,8 +8,9 @@ import {
   ChatCompletionMessageParam,
 } from 'openai/resources';
 import { File } from '@web-std/file';
-import { SupabaseService } from '../supabase/supabase.service';
 import { Stream } from 'openai/streaming';
+
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class ChatGptService {

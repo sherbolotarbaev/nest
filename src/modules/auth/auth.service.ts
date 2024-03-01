@@ -4,6 +4,13 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+
+import { UsersService } from '../users/users.service';
+import { compare, hash } from '../../utils/bcrypt';
+import { JwtService } from '../jwt/jwt.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { MailerService } from '@nestjs-modules/mailer';
+
 import {
   LoginDto,
   RegisterDto,
@@ -12,12 +19,6 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from './dto';
-import { UsersService } from '../users/users.service';
-import { compare, hash } from '../../utils/bcrypt';
-import { JwtService } from '../jwt/jwt.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { MailerService } from '@nestjs-modules/mailer';
-import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -30,15 +31,11 @@ export class AuthService {
 
   async register(dto: RegisterDto) {
     const user = await this.usersService.createUser(dto);
-    const token = await this.jwt.generateToken(user.id);
 
     this.sendVerificationCode(user.id, user.email, user.firstName);
 
     try {
-      return {
-        message: `Successfully registered as ${user.firstName} ${user.lastName}`,
-        token,
-      };
+      return user;
     } catch (e) {
       console.error(e);
       throw new Error(e.message);
@@ -57,25 +54,16 @@ export class AuthService {
       this.sendVerificationCode(user.id, user.email, user.firstName);
     }
 
-    const token = await this.jwt.generateToken(user.id);
-
     try {
-      return {
-        message: `Successfully logged in as ${user.firstName} ${user.lastName}`,
-        token,
-      };
+      return user;
     } catch (e) {
       console.error(e);
       throw new Error(e.message);
     }
   }
 
-  async getMe(userId: number) {
-    const user = await this.usersService.findById(userId);
-
-    if (user.role === 'USER') {
-      user.password = undefined;
-    }
+  async getMe(user: User) {
+    //! TODO: Location tracking...
 
     try {
       return user;
@@ -85,9 +73,7 @@ export class AuthService {
     }
   }
 
-  async editMe(userId: number, { firstName, lastName, username }: EditMeDto) {
-    const user = await this.usersService.findById(userId);
-
+  async editMe(user: User, { firstName, lastName, username }: EditMeDto) {
     if (username && username !== user.username) {
       const existingUsername = await this.prisma.user.findUnique({
         where: {
@@ -119,9 +105,7 @@ export class AuthService {
     }
   }
 
-  async emailVerification(userId: number, { code }: EmailVerificationDto) {
-    const user = await this.usersService.findById(userId);
-
+  async emailVerification(user: User, { code }: EmailVerificationDto) {
     if (user.isVerified) {
       throw new BadRequestException('User has already been verified');
     }
@@ -241,14 +225,5 @@ export class AuthService {
         `,
       }),
     ]);
-  }
-
-  private async setCookie(response: Response, token: string) {
-    return response.cookie('token', token, {
-      maxAge: 60 * 30 * 1000, // 30 minutes
-      secure: true,
-      sameSite: 'none',
-      path: '/',
-    });
   }
 }

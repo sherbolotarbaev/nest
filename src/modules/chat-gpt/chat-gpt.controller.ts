@@ -10,17 +10,17 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ChatGptService } from './chat-gpt.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from '../auth/common';
-import { StreamConversationDto } from './dto';
 import { Response } from 'express';
+
+import { ChatGptService } from './chat-gpt.service';
+
+import { StreamConversationDto } from './dto';
 
 @Controller('chat-gpt')
 export class ChatGptController {
   constructor(private readonly chatGptService: ChatGptService) {}
 
-  @Public()
   @Post('transcribe')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('audio'))
@@ -39,7 +39,6 @@ export class ChatGptController {
     return await this.chatGptService.transcribeAudio(audio.buffer, 'en');
   }
 
-  @Public()
   @Post('conversation/stream')
   @HttpCode(HttpStatus.OK)
   async streamConversation(

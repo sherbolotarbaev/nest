@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
 import {
   AuthModule,
   UsersModule,
@@ -11,10 +12,10 @@ import {
   ChatGptModule,
   ChatModule,
 } from './modules';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './modules/auth/common';
+
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailerModule } from '@nestjs-modules/mailer';
+
 import { AppController } from './app.controller';
 
 @Module({
@@ -47,11 +48,6 @@ import { AppController } from './app.controller';
     ChatModule,
   ],
   controllers: [AppController],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-  ],
 })
 export class AppModule {}
+

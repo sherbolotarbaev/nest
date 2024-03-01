@@ -1,16 +1,28 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Patch,
   Post,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+
 import { AuthService } from './auth.service';
-import { Public, UserId } from './common';
+
 import {
-  LoginDto,
+  TokenInterceptor,
+  User,
+  SessionAuthGuard,
+  JWTAuthGuard,
+  LocalAuthGuard,
+  Public,
+} from './common';
+
+import {
   RegisterDto,
   EditMeDto,
   EmailVerificationDto,
@@ -19,12 +31,15 @@ import {
 } from './dto';
 
 @Controller()
+@UseGuards(SessionAuthGuard, JWTAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(TokenInterceptor)
   async register(@Body() dto: RegisterDto) {
     return await this.authService.register(dto);
   }
@@ -32,29 +47,31 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginDto) {
-    return await this.authService.login(dto);
+  @UseGuards(LocalAuthGuard)
+  @UseInterceptors(TokenInterceptor)
+  async login(@User() user: User) {
+    return user;
   }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  async getMe(@UserId() userId: number) {
-    return await this.authService.getMe(userId);
+  async getMe(@User() user: User) {
+    return await this.authService.getMe(user);
   }
 
   @Patch('me')
   @HttpCode(HttpStatus.OK)
-  async editMe(@UserId() userId: number, @Body() dto: EditMeDto) {
-    return await this.authService.editMe(userId, dto);
+  async editMe(@User() user: User, @Body() dto: EditMeDto) {
+    return await this.authService.editMe(user, dto);
   }
 
   @Post('email-verification')
   @HttpCode(HttpStatus.OK)
   async emailVerification(
-    @UserId() userId: number,
+    @User() user: User,
     @Body() dto: EmailVerificationDto,
   ) {
-    return await this.authService.emailVerification(userId, dto);
+    return await this.authService.emailVerification(user, dto);
   }
 
   @Public()
