@@ -30,7 +30,7 @@ export class AppController {
     return response.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'OK ✅',
-      sourceCode: 'https://github.com/sherbolotarbaev/nest 🚀',
+      sourceCode: 'https://github.com/sherbolotarbaev/nest',
     });
   }
 
