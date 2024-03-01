@@ -27,7 +27,7 @@ export class TokenInterceptor implements NestInterceptor {
         response.cookie('token', token, {
           httpOnly: true,
           signed: true,
-          sameSite: 'strict',
+          sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
         });
 
