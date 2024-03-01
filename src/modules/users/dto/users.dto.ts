@@ -1,6 +1,8 @@
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -28,4 +30,14 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
   @MaxLength(16, { message: 'Password cannot be longer than 16 characters' })
   password: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Photo cannot be empty' })
+  @IsString({ message: 'Photo must be a string' })
+  photo?: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'isVerified cannot be empty' })
+  @IsBoolean({ message: 'isVerified must be a boolean' })
+  isVerified?: boolean;
 }

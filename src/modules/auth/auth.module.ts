@@ -6,7 +6,12 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 
-import { JwtStrategy, LocalStrategy, SessionSerializer } from './common';
+import {
+  JwtStrategy,
+  LocalStrategy,
+  GoogleStrategy,
+  SessionSerializer,
+} from './common';
 import { COOKIE_MAX_AGE } from './common/constants';
 
 @Module({
@@ -28,6 +33,7 @@ import { COOKIE_MAX_AGE } from './common/constants';
     UsersService,
     JwtStrategy,
     LocalStrategy,
+    GoogleStrategy,
     SessionSerializer,
   ],
   controllers: [AuthController],

@@ -15,12 +15,14 @@ import { AuthService } from './auth.service';
 
 import {
   TokenInterceptor,
-  User,
   SessionAuthGuard,
   JWTAuthGuard,
   LocalAuthGuard,
+  GoogleOauthGuard,
+  User,
   Public,
 } from './common';
+import { GoogleUser } from './common/interface';
 
 import {
   RegisterDto,
@@ -35,6 +37,15 @@ import {
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Public()
+  @Get('google/callback')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(GoogleOauthGuard)
+  @UseInterceptors(TokenInterceptor)
+  async googleOAuthCallback(@User() user: GoogleUser) {
+    return await this.authService.googleOAuthCallback(user);
+  }
 
   @Public()
   @Post('register')
