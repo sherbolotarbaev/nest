@@ -95,7 +95,7 @@ export class OthersService {
     });
 
     try {
-      return this.jwt.generateToken(user.id);
+      return user;
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);
