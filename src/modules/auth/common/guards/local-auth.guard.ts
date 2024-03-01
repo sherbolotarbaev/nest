@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 
-import { LoginDto } from '@auth/dto';
+import { LoginDto } from '../../dto';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
