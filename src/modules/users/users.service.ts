@@ -154,8 +154,6 @@ export class UsersService {
         },
       });
 
-      delete user.password;
-
       return user;
     } catch (e: any) {
       console.error(e);

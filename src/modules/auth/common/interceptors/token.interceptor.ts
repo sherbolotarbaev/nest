@@ -31,7 +31,14 @@ export class TokenInterceptor implements NestInterceptor {
           secure: process.env.NODE_ENV === 'production',
         });
 
-        return user;
+        delete user.password;
+        delete user.resetPasswordToken;
+        delete user.verificationToken;
+
+        return {
+          ...user,
+          token,
+        };
       }),
     );
   }
