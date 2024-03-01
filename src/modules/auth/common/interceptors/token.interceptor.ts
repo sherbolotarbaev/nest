@@ -35,10 +35,7 @@ export class TokenInterceptor implements NestInterceptor {
         delete user.resetPasswordToken;
         delete user.verificationToken;
 
-        return {
-          ...user,
-          token,
-        };
+        return user;
       }),
     );
   }
