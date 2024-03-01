@@ -34,8 +34,6 @@ export class TokenInterceptor implements NestInterceptor {
           sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
-          domain: 'sherbolotarbaev.pro',
-          path: '/',
         });
 
         delete user.password;

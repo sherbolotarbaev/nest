@@ -52,8 +52,6 @@ export function setup(app: INestApplication): INestApplication {
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
         maxAge: COOKIE_MAX_AGE,
-        domain: 'sherbolotarbaev.pro',
-        path: '/',
       },
     }),
   );
