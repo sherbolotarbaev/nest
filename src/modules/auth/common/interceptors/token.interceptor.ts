@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 
 import { JwtService } from '../../../jwt/jwt.service';
 
-import { COOKIE_MAX_AGE } from '..';
+import { COOKIE_MAX_AGE } from '../constants';
 
 @Injectable()
 export class TokenInterceptor implements NestInterceptor {
