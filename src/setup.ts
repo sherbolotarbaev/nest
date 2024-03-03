@@ -1,10 +1,10 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
-import connectPgSimple from 'connect-pg-simple';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import session from 'express-session';
-import passport from 'passport';
+import connectPgSimple from 'connect-pg-simple'; // use * as connectPgSimple for local
+import cookieParser from 'cookie-parser'; // use * as cookieParser for local
+import bodyParser from 'body-parser'; // use * as bodyParser for local
+import session from 'express-session'; // use * as session for local
+import passport from 'passport'; // use * as passport for local
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';

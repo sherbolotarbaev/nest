@@ -15,7 +15,7 @@ import {
   SendMessageDto,
 } from './dto';
 
-import moment from 'moment';
+import moment from 'moment'; // use * as moment for local
 import 'moment-timezone';
 import axios from 'axios';
 
