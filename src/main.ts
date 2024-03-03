@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 
+import { AppModule } from './app.module';
 import { setup } from './setup';
 
 async function start() {

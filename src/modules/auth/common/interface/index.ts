@@ -1,2 +1,2 @@
 export * from './jwt.interface';
-export * from './google-oauth';
+export * from './google-oauth.interface';

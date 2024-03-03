@@ -34,3 +34,42 @@ type LocationData = {
   country: string;
   timezone: string;
 };
+
+type Views = {
+  id: number;
+  count: number;
+  lastViewAt: string;
+};
+
+type EmailOtp = {
+  id: number;
+  email: string;
+  otp: string;
+  expires: number;
+  isVerified: boolean;
+  createdAt: string;
+};
+
+type Chat = {
+  id: number;
+  userId: number;
+  title: string;
+  conversations: Conversation[];
+  user: User;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type ConversationRole = 'USER' | 'ASSISTANT' | 'SYSTEM';
+
+type Conversation = {
+  id: number;
+  userId: number;
+  chatId: number;
+  role: ConversationRole;
+  content: string;
+  user: User;
+  chat: Chat;
+  createdAt: string;
+};
