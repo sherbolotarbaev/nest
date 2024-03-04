@@ -53,6 +53,10 @@ export class AuthService {
         );
       }
 
+      if (!existingUser.isActive) {
+        return { error: true, status: 403 };
+      }
+
       try {
         return existingUser;
       } catch (e: any) {
@@ -61,21 +65,23 @@ export class AuthService {
       }
     }
 
-    const user = await this.usersService.createUser({
-      firstName,
-      lastName,
-      email,
-      photo,
-      password: '',
-      isVerified,
-    });
+    return { error: true, status: 400 };
 
-    try {
-      return user;
-    } catch (e: any) {
-      console.error(e);
-      throw new Error(e.message);
-    }
+    // const user = await this.usersService.createUser({
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   photo,
+    //   password: '',
+    //   isVerified,
+    // });
+
+    // try {
+    //   return user;
+    // } catch (e: any) {
+    //   console.error(e);
+    //   throw new Error(e.message);
+    // }
   }
 
   async register(dto: RegisterDto) {

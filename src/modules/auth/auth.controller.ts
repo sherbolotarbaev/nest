@@ -7,9 +7,11 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { AuthService } from './auth.service';
 
@@ -62,6 +64,15 @@ export class AuthController {
   @UseInterceptors(TokenInterceptor)
   async login(@User() user: User) {
     return user;
+  }
+
+  @Get('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@Res() response: Response) {
+    return response
+      .status(HttpStatus.OK)
+      .clearCookie('token')
+      .redirect(process.env.FRONTEND_BASE_URL);
   }
 
   @Get('me')

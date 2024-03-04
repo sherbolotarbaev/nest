@@ -123,7 +123,14 @@ export class UsersService {
     }
   }
 
-  async createUser({ firstName, lastName, email, password }: CreateUserDto) {
+  async createUser({
+    firstName,
+    lastName,
+    email,
+    password,
+    photo,
+    isVerified,
+  }: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email: email.toLowerCase(),
@@ -151,6 +158,8 @@ export class UsersService {
           email: email.toLowerCase(),
           username,
           password: hashedPassword,
+          photo,
+          isVerified,
         },
       });
 

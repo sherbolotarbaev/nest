@@ -25,6 +25,15 @@ export class TokenInterceptor implements NestInterceptor {
       map(async (user) => {
         const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
+
+        if (user?.error) {
+          return response
+            .status(HttpStatus.OK)
+            .redirect(
+              `${process.env.FRONTEND_BASE_URL}/login?error=${user.status}`,
+            );
+        }
+
         const token = await this.jwtService.generateToken(user.id);
 
         response.setHeader('Authorization', `Bearer ${token}`);
