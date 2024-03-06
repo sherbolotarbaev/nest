@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import {
   AuthModule,
@@ -16,7 +17,9 @@ import {
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailerModule } from '@nestjs-modules/mailer';
 
-import { AppController } from './app.controller';
+// import { AppController } from './app.controller';
+
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { AppController } from './app.controller';
         },
       },
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     AuthModule,
     UsersModule,
     PrismaModule,
@@ -47,6 +53,6 @@ import { AppController } from './app.controller';
     ChatGptModule,
     ChatModule,
   ],
-  controllers: [AppController],
+  // controllers: [AppController],
 })
 export class AppModule {}
