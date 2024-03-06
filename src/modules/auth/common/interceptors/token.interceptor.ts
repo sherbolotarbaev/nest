@@ -5,7 +5,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,10 +20,9 @@ export class TokenInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
     next: CallHandler<User>,
-  ): Observable<Promise<void | User>> {
+  ): Observable<Promise<void>> {
     return next.handle().pipe(
       map(async (user) => {
-        const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
 
         if (user?.error) {
@@ -45,17 +44,9 @@ export class TokenInterceptor implements NestInterceptor {
           maxAge: COOKIE_MAX_AGE,
         });
 
-        delete user.password;
-        delete user.resetPasswordToken;
-        delete user.verificationToken;
-
-        if (request.query.authuser) {
-          return response
-            .status(HttpStatus.OK)
-            .redirect(process.env.FRONTEND_BASE_URL);
-        }
-
-        return user;
+        return response
+          .status(HttpStatus.OK)
+          .redirect(`${process.env.FRONTEND_BASE_URL}/redirect`);
       }),
     );
   }
