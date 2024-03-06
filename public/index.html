@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
-    <title>© Personal API</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>NestJS personal API 🐼</title>
     <style>
       *,
       *::after,
@@ -18,28 +24,47 @@
       pre {
         word-wrap: break-word;
         white-space: pre-wrap;
+
         padding: 10px;
-        border-radius: 5px;
         overflow: auto;
+
+        font-family: 'Fira Code', monospace;
+        font-optical-sizing: auto;
+        font-weight: weight;
+        font-style: normal;
+
+        color: #88ddff;
       }
 
       span {
-        color: #7af651;
+        color: #c1c1c1;
+      }
+
+      .string {
+        color: #c3e88d;
+      }
+
+      .number {
+        color: #f88c6c;
+      }
+
+      .key {
+        color: #fafafa;
       }
 
       a {
-        color: rgb(0, 136, 255);
+        color: #c3e88d;
       }
     </style>
   </head>
 
   <body>
     <pre>
-{
-  status: <span>200</span>,
-  message: "<span>OK</span>",
-  sourceCode: "<span><a href="https://github.com/sherbolotarbaev/nest">https://github.com/sherbolotarbaev/nest</a></span>",
-};
+<span>{</span>
+  <span class="key">status</span>: <span class="number">200</span>,
+  <span class="key">message</span>: '<span class="string">OK</span>',
+  <span class="key">sourceCode</span>: '<span class="string"><a href="https://github.com/sherbolotarbaev/nest" target="_blank">https://github.com/sherbolotarbaev/nest</a></span>',
+<span>};</span>
     </pre>
   </body>
 </html>
