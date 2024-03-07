@@ -42,6 +42,8 @@ export class TokenInterceptor implements NestInterceptor {
         response.cookie('token', token, {
           httpOnly: true,
           signed: true,
+          domain: 'sherbolotarbaev.pro',
+          path: '/',
           sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,

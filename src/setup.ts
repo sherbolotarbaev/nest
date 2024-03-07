@@ -53,6 +53,8 @@ export function setup(app: INestApplication): INestApplication {
       cookie: {
         httpOnly: true,
         signed: true,
+        domain: 'sherbolotarbaev.pro',
+        path: '/',
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
         maxAge: COOKIE_MAX_AGE,
