@@ -22,7 +22,11 @@ export function setup(app: INestApplication): INestApplication {
   );
 
   app.enableCors({
-    origin: ['http://localhost:3000', `${process.env.FRONTEND_BASE_URL}`],
+    origin: [
+      'http://localhost:3000',
+      'https://sherbolotarbaev.vercel.app',
+      `${process.env.FRONTEND_BASE_URL}`,
+    ],
     exposedHeaders: ['Authorization'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
