@@ -33,9 +33,7 @@ export class TokenInterceptor implements NestInterceptor {
         if (user?.error) {
           return response
             .status(HttpStatus.OK)
-            .redirect(
-              `${process.env.FRONTEND_BASE_URL}/login?error=${user.status}`,
-            );
+            .redirect(`${process.env.AUTH_APP_URL}/login?error=${user.status}`);
         }
 
         const token = await this.jwtService.generateToken(user.id);

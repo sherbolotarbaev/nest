@@ -24,7 +24,7 @@ export function setup(app: INestApplication): INestApplication {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'https://sherbolotarbaev.vercel.app',
+      `${process.env.AUTH_APP_URL}`,
       `${process.env.FRONTEND_BASE_URL}`,
     ],
     exposedHeaders: ['Authorization'],
