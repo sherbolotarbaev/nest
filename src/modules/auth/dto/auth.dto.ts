@@ -81,9 +81,9 @@ export class ForgotPasswordDto {
 }
 
 export class ResetPasswordDto {
-  @IsNotEmpty({ message: 'Token cannot be empty' })
-  @IsString({ message: 'Token must be a string' })
-  token: string;
+  @IsNotEmpty({ message: 'Identification token cannot be empty' })
+  @IsString({ message: 'Identification token must be a string' })
+  identificationToken: string;
 
   @IsNotEmpty({ message: 'Password cannot be empty' })
   @IsString({ message: 'Password must be a string' })

@@ -17,18 +17,18 @@ export class JwtService extends NestJwtService {
     } as JwtSignOptions);
   }
 
-  async generateResetPasswordSecret(userId: number) {
-    const token = await this.signAsync({ id: userId }, {
+  async generateResetPasswordToken(userId: number) {
+    const identificationToken = await this.signAsync({ id: userId }, {
       secret: process.env.JWT_SECRET_KEY,
       expiresIn: 60 * 2, // 2 minutes
     } as JwtSignOptions);
 
-    return token;
+    return identificationToken;
   }
 
-  async compareResetPasswordSecret(token: string) {
+  async compareResetPasswordToken(identificationToken: string) {
     try {
-      const decoded = await this.verifyAsync(token, {
+      const decoded = await this.verifyAsync(identificationToken, {
         secret: process.env.JWT_SECRET_KEY,
       });
 
@@ -40,7 +40,7 @@ export class JwtService extends NestJwtService {
         );
       } else {
         throw new UnauthorizedException(
-          'Invalid reset password token. Please use the link provided to reset your password.',
+          'Invalid reset password identification token. Please use the link provided to reset your password.',
         );
       }
     }

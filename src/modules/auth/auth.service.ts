@@ -191,8 +191,8 @@ export class AuthService {
   async forgotPassword({ email }: ForgotPasswordDto) {
     const user = await this.usersService.findByEmail(email);
 
-    const token = await this.jwt.generateResetPasswordSecret(user.id);
-    const forgotLink = `${process.env.FRONTEND_BASE_URL}/password/reset/?token=${token}`;
+    const identificationToken = await this.jwt.generateResetPasswordToken(user.id);
+    const forgotLink = `${process.env.FRONTEND_BASE_URL}/password/reset?identification_token=${identificationToken}`;
 
     await Promise.all([
       this.prisma.user.update({
@@ -200,7 +200,7 @@ export class AuthService {
           id: user.id,
         },
         data: {
-          resetPasswordToken: token,
+          resetPasswordToken: identificationToken,
         },
       }),
       this.mailerService.sendMail({
@@ -224,8 +224,8 @@ export class AuthService {
     }
   }
 
-  async resetPassword({ password, token }: ResetPasswordDto) {
-    const compare = await this.jwt.compareResetPasswordSecret(token);
+  async resetPassword({ password, identificationToken }: ResetPasswordDto) {
+    const compare = await this.jwt.compareResetPasswordToken(identificationToken);
     const userId = compare.id;
     const hashedPassword = await hash(password);
 
