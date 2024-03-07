@@ -192,7 +192,7 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
 
     const identificationToken = await this.jwt.generateResetPasswordToken(user.id);
-    const forgotLink = `${process.env.FRONTEND_BASE_URL}/password/reset?identification_token=${identificationToken}`;
+    const forgotLink = `${process.env.AUTH_APP_URL}/password/reset?identification_token=${identificationToken}`;
 
     await Promise.all([
       this.prisma.user.update({
