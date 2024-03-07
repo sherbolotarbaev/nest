@@ -215,7 +215,9 @@ export class AuthService {
     ]);
 
     try {
-      return `Password reset link has been sent to ${user.email}`;
+      return {
+        message: `Password reset link has been sent to ${user.email}`,
+      };
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);
@@ -241,7 +243,9 @@ export class AuthService {
     });
 
     try {
-      return `Your password has been successfully updated`;
+      return {
+        message: 'Your password has been successfully updated',
+      };
     } catch (e: any) {
       console.error(e);
       throw new Error(e.message);

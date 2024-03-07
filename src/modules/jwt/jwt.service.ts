@@ -19,7 +19,7 @@ export class JwtService extends NestJwtService {
 
   async generateResetPasswordSecret(userId: number) {
     const token = await this.signAsync({ id: userId }, {
-      secret: process.env.JWT_RESET_PASSWORD_SECRET,
+      secret: process.env.JWT_SECRET_KEY,
       expiresIn: 60 * 2, // 2 minutes
     } as JwtSignOptions);
 
@@ -29,7 +29,7 @@ export class JwtService extends NestJwtService {
   async compareResetPasswordSecret(token: string) {
     try {
       const decoded = await this.verifyAsync(token, {
-        secret: process.env.JWT_RESET_PASSWORD_SECRET,
+        secret: process.env.JWT_SECRET_KEY,
       });
 
       return decoded;
