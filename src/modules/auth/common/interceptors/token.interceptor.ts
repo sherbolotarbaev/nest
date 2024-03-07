@@ -20,7 +20,11 @@ export class TokenInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
     next: CallHandler<User>,
-  ): Observable<Promise<User | void>> {
+  ): Observable<
+    Promise<{
+      redirectUrl: string;
+    } | void>
+  > {
     return next.handle().pipe(
       map(async (user) => {
         const request = context.switchToHttp().getRequest<Request>();
@@ -48,10 +52,14 @@ export class TokenInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.FRONTEND_BASE_URL}/redirect`);
+            .redirect(
+              `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
+            );
         }
 
-        return user;
+        return {
+          redirectUrl: `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
+        };
       }),
     );
   }
