@@ -18,21 +18,17 @@ export class JwtService extends NestJwtService {
   }
 
   async generateResetPasswordToken(userId: number) {
-    const identificationToken = await this.signAsync({ id: userId }, {
+    return this.signAsync({ id: userId }, {
       secret: process.env.JWT_SECRET_KEY,
       expiresIn: 60 * 2, // 2 minutes
     } as JwtSignOptions);
-
-    return identificationToken;
   }
 
   async compareResetPasswordToken(identificationToken: string) {
     try {
-      const decoded = await this.verifyAsync(identificationToken, {
+      return this.verifyAsync(identificationToken, {
         secret: process.env.JWT_SECRET_KEY,
       });
-
-      return decoded;
     } catch (e: any) {
       if (e.name === 'TokenExpiredError') {
         throw new UnauthorizedException(
