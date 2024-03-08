@@ -28,7 +28,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       lastName: `${name.familyName}`,
       photo: photos[0].value,
       email: emails[0].value,
-      isVerified: emails[0].verified === 'true' ? true : false,
     };
 
     done(null, user);

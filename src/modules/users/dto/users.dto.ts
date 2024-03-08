@@ -35,9 +35,4 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Photo cannot be empty' })
   @IsString({ message: 'Photo must be a string' })
   photo?: string;
-
-  @IsOptional()
-  @IsNotEmpty({ message: 'isVerified cannot be empty' })
-  @IsBoolean({ message: 'isVerified must be a boolean' })
-  isVerified?: boolean;
 }

@@ -30,10 +30,10 @@ export class TokenInterceptor implements NestInterceptor {
         const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
 
-        if (user?.error) {
+        if (user.error && user.status === 403) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/login?error=${user.status}`);
+            .redirect(`${process.env.AUTH_APP_URL}/deactivated`);
         }
 
         const token = await this.jwtService.generateToken(user.id);

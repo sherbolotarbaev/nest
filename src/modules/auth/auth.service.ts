@@ -31,13 +31,7 @@ export class AuthService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async googleOAuthCallback({
-    firstName,
-    lastName,
-    photo,
-    email,
-    isVerified,
-  }: GoogleUser) {
+  async googleOAuthCallback({ firstName, lastName, photo, email }: GoogleUser) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email,
@@ -65,23 +59,22 @@ export class AuthService {
       }
     }
 
-    return { error: true, status: 400 };
+    const user = await this.usersService.createUser({
+      firstName,
+      lastName,
+      email,
+      photo,
+      password: 'google-user',
+    });
 
-    // const user = await this.usersService.createUser({
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   photo,
-    //   password: '',
-    //   isVerified,
-    // });
+    this.sendVerificationCode(user.id, user.email, user.firstName);
 
-    // try {
-    //   return user;
-    // } catch (e: any) {
-    //   console.error(e);
-    //   throw new Error(e.message);
-    // }
+    try {
+      return user;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
   }
 
   async register(dto: RegisterDto) {
@@ -191,7 +184,9 @@ export class AuthService {
   async forgotPassword({ email }: ForgotPasswordDto) {
     const user = await this.usersService.findByEmail(email);
 
-    const identificationToken = await this.jwt.generateResetPasswordToken(user.id);
+    const identificationToken = await this.jwt.generateResetPasswordToken(
+      user.id,
+    );
     const forgotLink = `${process.env.AUTH_APP_URL}/password/reset?identification_token=${identificationToken}`;
 
     await Promise.all([
@@ -225,7 +220,9 @@ export class AuthService {
   }
 
   async resetPassword({ password, identificationToken }: ResetPasswordDto) {
-    const compare = await this.jwt.compareResetPasswordToken(identificationToken);
+    const compare = await this.jwt.compareResetPasswordToken(
+      identificationToken,
+    );
     const userId = compare.id;
     const hashedPassword = await hash(password);
 

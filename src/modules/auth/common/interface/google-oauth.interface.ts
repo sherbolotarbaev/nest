@@ -3,5 +3,4 @@ export interface GoogleUser {
   lastName: string;
   photo: string | undefined;
   email: string;
-  isVerified: boolean;
 }

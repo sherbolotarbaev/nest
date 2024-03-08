@@ -129,7 +129,6 @@ export class UsersService {
     email,
     password,
     photo,
-    isVerified,
   }: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
@@ -159,7 +158,6 @@ export class UsersService {
           username,
           password: hashedPassword,
           photo,
-          isVerified,
         },
       });
 
