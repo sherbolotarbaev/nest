@@ -59,22 +59,24 @@ export class AuthService {
       }
     }
 
-    const user = await this.usersService.createUser({
-      firstName,
-      lastName,
-      email,
-      photo,
-      password: 'google-user',
-    });
+    return { error: true, status: 400 };
 
-    this.sendVerificationCode(user.id, user.email, user.firstName);
+    // const user = await this.usersService.createUser({
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   photo,
+    //   password: 'google-user',
+    // });
 
-    try {
-      return user;
-    } catch (e: any) {
-      console.error(e);
-      throw new Error(e.message);
-    }
+    // this.sendVerificationCode(user.id, user.email, user.firstName);
+
+    // try {
+    //   return user;
+    // } catch (e: any) {
+    //   console.error(e);
+    //   throw new Error(e.message);
+    // }
   }
 
   async register(dto: RegisterDto) {
