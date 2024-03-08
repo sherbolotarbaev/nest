@@ -50,13 +50,11 @@ export class TokenInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(
-              `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
-            );
+            .redirect(`${process.env.AUTH_APP_URL}/oauth?token=${token}`);
         }
 
         return {
-          redirectUrl: `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
+          redirectUrl: `${process.env.AUTH_APP_URL}/oauth?token=${token}`,
         };
       }),
     );

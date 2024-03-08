@@ -72,7 +72,7 @@ export class AuthController {
     return response
       .status(HttpStatus.OK)
       .clearCookie('token')
-      .redirect(process.env.FRONTEND_BASE_URL);
+      .redirect(process.env.AUTH_APP_URL);
   }
 
   @Get('me')
