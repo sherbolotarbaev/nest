@@ -15,9 +15,6 @@ type User = {
   isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
-
-  error?: boolean;
-  status?: number;
 };
 
 type Message = {

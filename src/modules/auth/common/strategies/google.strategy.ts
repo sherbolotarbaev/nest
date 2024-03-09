@@ -1,12 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
 
 import { GoogleUser } from '../interface';
 
+import { AuthService } from '../../auth.service';
+
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
+  constructor(private readonly authService: AuthService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -30,6 +36,18 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       email: emails[0].value,
     };
 
-    done(null, user);
+    const validate = await this.authService.googleOAuthValidate(user.email);
+
+    if ('error' in validate) {
+      if (validate.status === 401) {
+        return done(new UnauthorizedException("User doesn't exist"));
+      }
+
+      if (validate.status === 403) {
+        return done(new ForbiddenException('User has been deactivated'));
+      }
+    }
+
+    done(null, validate as User);
   }
 }

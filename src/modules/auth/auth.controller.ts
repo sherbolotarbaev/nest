@@ -24,7 +24,6 @@ import {
   User,
   Public,
 } from './common';
-import { GoogleUser } from './common/interface';
 
 import {
   RegisterDto,
@@ -45,8 +44,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(GoogleOauthGuard)
   @UseInterceptors(TokenInterceptor)
-  async googleOAuthCallback(@User() user: GoogleUser) {
-    return await this.authService.googleOAuthCallback(user);
+  async googleOAuthCallback(@User() user: User) {
+    return user;
   }
 
   @Public()

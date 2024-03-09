@@ -30,12 +30,6 @@ export class TokenInterceptor implements NestInterceptor {
         const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
 
-        if (user.error) {
-          return response
-            .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/login?error=${user.status}`);
-        }
-
         const token = await this.jwtService.generateToken(user.id);
 
         response.setHeader('Authorization', `Bearer ${token}`);
@@ -54,7 +48,7 @@ export class TokenInterceptor implements NestInterceptor {
         }
 
         return {
-          redirectUrl: `${process.env.AUTH_APP_URL}/redirect?token=${token}`,
+          redirectUrl: `/redirect?token=${token}`,
         };
       }),
     );

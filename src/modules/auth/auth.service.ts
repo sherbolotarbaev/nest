@@ -11,8 +11,6 @@ import { JwtService } from '../jwt/jwt.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
 
-import { GoogleUser } from './common/interface';
-
 import {
   LoginDto,
   RegisterDto,
@@ -31,7 +29,9 @@ export class AuthService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async googleOAuthCallback({ firstName, lastName, photo, email }: GoogleUser) {
+  async googleOAuthValidate(
+    email: string,
+  ): Promise<User | { error: boolean; status: number }> {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email,
@@ -59,24 +59,7 @@ export class AuthService {
       }
     }
 
-    return { error: true, status: 400 };
-
-    // const user = await this.usersService.createUser({
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   photo,
-    //   password: 'google-user',
-    // });
-
-    // this.sendVerificationCode(user.id, user.email, user.firstName);
-
-    // try {
-    //   return user;
-    // } catch (e: any) {
-    //   console.error(e);
-    //   throw new Error(e.message);
-    // }
+    return { error: true, status: 401 };
   }
 
   async register(dto: RegisterDto) {
