@@ -38,25 +38,23 @@ export class TokenInterceptor implements NestInterceptor {
 
         const token = await this.jwtService.generateToken(user.id);
 
-        response.setHeader('Authorization', `Bearer ${token}`);
-        response.cookie('token', token, {
-          httpOnly: true,
-          signed: true,
-          sameSite: 'none',
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: COOKIE_MAX_AGE,
-        });
+        // response.setHeader('Authorization', `Bearer ${token}`);
+        // response.cookie('token', token, {
+        //   httpOnly: true,
+        //   signed: true,
+        //   sameSite: 'none',
+        //   secure: process.env.NODE_ENV === 'production',
+        //   maxAge: COOKIE_MAX_AGE,
+        // });
 
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(
-              `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
-            );
+            .redirect(`${process.env.AUTH_APP_URL}/oauth?token=${token}`);
         }
 
         return {
-          redirectUrl: `${process.env.FRONTEND_BASE_URL}/redirect?token=${token}`,
+          redirectUrl: `${process.env.AUTH_APP_URL}/oauth?token=${token}`,
         };
       }),
     );
