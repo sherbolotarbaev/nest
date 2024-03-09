@@ -20,6 +20,8 @@ import {
   ResetPasswordDto,
 } from './dto';
 
+import { GoogleUser } from '../auth/common/interface';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -29,9 +31,12 @@ export class AuthService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async googleOAuthValidate(
-    email: string,
-  ): Promise<User | { error: boolean; status: number }> {
+  async googleOAuthValidate({
+    firstName,
+    lastName,
+    photo,
+    email,
+  }: GoogleUser): Promise<User | { error: boolean; status: number }> {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email,
@@ -59,7 +64,22 @@ export class AuthService {
       }
     }
 
-    return { error: true, status: 401 };
+    const user = await this.usersService.createUser({
+      firstName,
+      lastName,
+      email,
+      password: 'google-oauth',
+      photo,
+    });
+
+    this.sendVerificationCode(user.id, user.email, user.firstName);
+
+    try {
+      return user;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(e.message);
+    }
   }
 
   async register(dto: RegisterDto) {
