@@ -1,6 +1,6 @@
 import { Injectable, ExecutionContext, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
