@@ -35,7 +35,7 @@ export class TokenInterceptor implements NestInterceptor {
         response.setHeader('Authorization', `Bearer ${token}`);
         response.cookie('token', token, {
           httpOnly: true,
-          signed: true,
+          // signed: true,
           sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
@@ -44,11 +44,11 @@ export class TokenInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/redirect?token=${token}`);
+            .redirect(`${process.env.AUTH_APP_URL}/redirect`);
         }
 
         return {
-          redirectUrl: `/redirect?token=${token}`,
+          redirectUrl: `/redirect`,
         };
       }),
     );
