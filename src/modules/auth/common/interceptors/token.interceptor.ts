@@ -6,6 +6,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -35,7 +36,7 @@ export class TokenInterceptor implements NestInterceptor {
         response.setHeader('Authorization', `Bearer ${token}`);
         response.cookie('token', token, {
           httpOnly: true,
-          // signed: true,
+          signed: true,
           sameSite: 'none',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
@@ -44,11 +45,11 @@ export class TokenInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/redirect`);
+            .redirect(`${process.env.AUTH_APP_URL}/redirect?token=${token}`);
         }
 
         return {
-          redirectUrl: `/redirect`,
+          redirectUrl: `/redirect?token=${token}`,
         };
       }),
     );
