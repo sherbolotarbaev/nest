@@ -71,7 +71,6 @@ export class AuthController {
     return response
       .status(HttpStatus.OK)
       .clearCookie('token')
-      .clearCookie('session-middleware')
       .redirect(process.env.AUTH_APP_URL);
   }
 
