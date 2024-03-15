@@ -4,7 +4,6 @@ import connectPgSimple from 'connect-pg-simple'; // use * as connectPgSimple for
 import cookieParser from 'cookie-parser'; // use * as cookieParser for local
 import bodyParser from 'body-parser'; // use * as bodyParser for local
 import session from 'express-session'; // use * as session for local
-import passport from 'passport'; // use * as passport for local
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
@@ -50,6 +49,7 @@ export function setup(app: INestApplication): INestApplication {
         process.env.NODE_ENV === 'production'
           ? new (connectPgSimple(session))()
           : new session.MemoryStore(),
+      name: 'sid',
       cookie: {
         httpOnly: true,
         signed: true,
@@ -59,9 +59,6 @@ export function setup(app: INestApplication): INestApplication {
       },
     }),
   );
-
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
