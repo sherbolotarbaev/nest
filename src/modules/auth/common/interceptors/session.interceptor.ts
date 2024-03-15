@@ -37,7 +37,7 @@ export class SessionInterceptor implements NestInterceptor {
         response.cookie('session', session, {
           httpOnly: true,
           signed: true,
-          sameSite: 'none',
+          sameSite: 'strict',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
         });

@@ -49,11 +49,10 @@ export function setup(app: INestApplication): INestApplication {
         process.env.NODE_ENV === 'production'
           ? new (connectPgSimple(session))()
           : new session.MemoryStore(),
-      name: 'sid',
       cookie: {
         httpOnly: true,
         signed: true,
-        sameSite: 'none',
+        sameSite: 'strict',
         secure: process.env.NODE_ENV === 'production',
         maxAge: COOKIE_MAX_AGE,
       },
