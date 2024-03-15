@@ -7,11 +7,12 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Req,
   Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 
@@ -76,8 +77,8 @@ export class AuthController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  async getMe(@User() user: User) {
-    return await this.authService.getMe(user);
+  async getMe(@Req() request: Request, @User() user: User) {
+    return await this.authService.getMe(request, user);
   }
 
   @Patch('me')

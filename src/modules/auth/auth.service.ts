@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import type { Request } from 'express';
 
 import { UsersService } from '../users/users.service';
 import { compare, hash } from '../../utils/bcrypt';
@@ -21,6 +22,8 @@ import {
 } from './dto';
 
 import { GoogleUser } from '../auth/common/interface';
+
+import { getLocation } from '../../utils';
 
 @Injectable()
 export class AuthService {
@@ -115,8 +118,17 @@ export class AuthService {
     }
   }
 
-  async getMe(user: User) {
-    //! TODO: Location tracking...
+  async getMe(request: Request, user: User) {
+    const ip =
+      request.headers['x-real-ip'] ||
+      request.headers['x-forwarded-for'] ||
+      request.socket.remoteAddress ||
+      '';
+
+    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+    const location = await getLocation(ipAddress);
+
+    this.setMetaData(user.id, ipAddress, location);
 
     delete user.password;
     delete user.resetPasswordToken;
@@ -290,5 +302,28 @@ export class AuthService {
         `,
       }),
     ]);
+  }
+
+  private async setMetaData(
+    userId: number,
+    ip: string,
+    location: LocationData,
+  ) {
+    await this.prisma.userMetaData.upsert({
+      where: {
+        userId,
+      },
+      create: {
+        userId,
+        ip,
+        ...location,
+        lastVisit: new Date(),
+      },
+      update: {
+        ip,
+        ...location,
+        lastVisit: new Date(),
+      },
+    });
   }
 }
