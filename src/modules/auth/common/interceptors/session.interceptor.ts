@@ -39,6 +39,7 @@ export class SessionInterceptor implements NestInterceptor {
           signed: true,
           sameSite: 'none',
           path: '/',
+          domain: '.vercel.app',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
         });
@@ -46,7 +47,9 @@ export class SessionInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/redirect?session=${session}`);
+            .redirect(
+              `${process.env.AUTH_APP_URL}/redirect?session=${session}`,
+            );
         }
 
         return {
