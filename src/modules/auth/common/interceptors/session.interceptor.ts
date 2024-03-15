@@ -15,7 +15,7 @@ import { JwtService } from '../../../jwt/jwt.service';
 import { COOKIE_MAX_AGE } from '../constants';
 
 @Injectable()
-export class TokenInterceptor implements NestInterceptor {
+export class SessionInterceptor implements NestInterceptor {
   constructor(private readonly jwtService: JwtService) {}
 
   intercept(
@@ -31,13 +31,14 @@ export class TokenInterceptor implements NestInterceptor {
         const request = context.switchToHttp().getRequest<Request>();
         const response = context.switchToHttp().getResponse<Response>();
 
-        const token = await this.jwtService.generateToken(user.id);
+        const session = await this.jwtService.generateSession(user.id);
 
-        response.setHeader('Authorization', `Bearer ${token}`);
-        response.cookie('token', token, {
+        response.setHeader('Authorization', `Bearer ${session}`);
+        response.cookie('session', session, {
           httpOnly: true,
           signed: true,
           sameSite: 'none',
+          path: '/',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
         });
@@ -45,11 +46,11 @@ export class TokenInterceptor implements NestInterceptor {
         if (request.query.authuser) {
           return response
             .status(HttpStatus.OK)
-            .redirect(`${process.env.AUTH_APP_URL}/redirect?token=${token}`);
+            .redirect(`${process.env.AUTH_APP_URL}/redirect?session=${session}`);
         }
 
         return {
-          redirectUrl: `/redirect?token=${token}`,
+          redirectUrl: `/redirect?session=${session}`,
         };
       }),
     );

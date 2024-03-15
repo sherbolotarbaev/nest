@@ -9,7 +9,7 @@ export class JwtService extends NestJwtService {
     super();
   }
 
-  async generateToken(userId: number) {
+  async generateSession(userId: number) {
     return this.signAsync({ id: userId }, {
       secret: process.env.JWT_SECRET_KEY,
       expiresIn: COOKIE_MAX_AGE,

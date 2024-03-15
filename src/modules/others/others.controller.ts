@@ -12,7 +12,7 @@ import type { Request } from 'express';
 
 import { OthersService } from './others.service';
 
-import { Public, TokenInterceptor } from '../auth/common';
+import { Public } from '../auth/common';
 
 import {
   SendEmailOtpDto,
@@ -36,7 +36,6 @@ export class OthersController {
   @Public()
   @Post('email-otp/check')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(TokenInterceptor)
   async checkEmailOtp(@Body() dto: CheckEmailOtpDto) {
     return await this.othersService.checkEmailOtp(dto);
   }

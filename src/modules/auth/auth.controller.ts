@@ -16,7 +16,7 @@ import type { Response } from 'express';
 import { AuthService } from './auth.service';
 
 import {
-  TokenInterceptor,
+  SessionInterceptor,
   SessionAuthGuard,
   JWTAuthGuard,
   LocalAuthGuard,
@@ -43,7 +43,7 @@ export class AuthController {
   @Get('google/callback')
   @HttpCode(HttpStatus.OK)
   @UseGuards(GoogleOauthGuard)
-  @UseInterceptors(TokenInterceptor)
+  @UseInterceptors(SessionInterceptor)
   async googleOAuthCallback(@User() user: User) {
     return user;
   }
@@ -51,7 +51,7 @@ export class AuthController {
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  @UseInterceptors(TokenInterceptor)
+  @UseInterceptors(SessionInterceptor)
   async register(@Body() dto: RegisterDto) {
     return await this.authService.register(dto);
   }
@@ -60,7 +60,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
-  @UseInterceptors(TokenInterceptor)
+  @UseInterceptors(SessionInterceptor)
   async login(@User() user: User) {
     return user;
   }
@@ -70,7 +70,7 @@ export class AuthController {
   async logout(@Res() response: Response) {
     return response
       .status(HttpStatus.OK)
-      .clearCookie('token')
+      .clearCookie('session')
       .redirect(process.env.AUTH_APP_URL);
   }
 

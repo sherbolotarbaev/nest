@@ -54,6 +54,7 @@ export function setup(app: INestApplication): INestApplication {
         httpOnly: true,
         signed: true,
         sameSite: 'none',
+        path: '/',
         secure: process.env.NODE_ENV === 'production',
         maxAge: COOKIE_MAX_AGE,
       },
