@@ -38,8 +38,6 @@ export class SessionInterceptor implements NestInterceptor {
           httpOnly: true,
           signed: true,
           sameSite: 'none',
-          path: '/',
-          domain: '.vercel.app',
           secure: process.env.NODE_ENV === 'production',
           maxAge: COOKIE_MAX_AGE,
         });
