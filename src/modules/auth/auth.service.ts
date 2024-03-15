@@ -118,6 +118,10 @@ export class AuthService {
   async getMe(user: User) {
     //! TODO: Location tracking...
 
+    delete user.password;
+    delete user.resetPasswordToken;
+    delete user.verificationToken;
+
     try {
       return user;
     } catch (e: any) {
