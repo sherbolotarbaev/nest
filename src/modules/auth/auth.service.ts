@@ -171,22 +171,22 @@ export class AuthService {
       throw new BadRequestException('User has already been verified');
     }
 
-    const comparedCode = await compare(code, user.verificationToken);
-
-    if (!comparedCode) {
-      throw new ConflictException(`Code doesn't match`);
-    }
-
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        isVerified: true,
-      },
-    });
-
     try {
+      const comparedCode = await compare(code, user.verificationToken);
+
+      if (!comparedCode) {
+        throw new ConflictException(`Code doesn't match`);
+      }
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          isVerified: true,
+        },
+      });
+
       return { success: true };
     } catch (e: any) {
       console.error(e);
@@ -289,8 +289,17 @@ export class AuthService {
         from: process.env.MAILER_USER,
         subject: 'Verification Code',
         html: `
-            <h2>Hey ${userName}</h2>
-            <p>Your verification code is <strong style="color:blue">${code}</strong>.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background-color: #f8f8f8; padding: 20px;">
+            <h2 style="color: #333;">Hey ${userName},</h2>
+            <p style="font-size: 16px;">Your verification code is:</p>
+            <div style="background-color: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 5px; margin-top: 10px;">
+              <h3 style="margin: 0; font-size: 24px; color: #007bff;">${code}</h3>
+            </div>
+            <p style="font-size: 14px; margin-top: 15px;">Please use this code to verify your email address.</p>
+          </div>
+          <p style="font-size: 14px; color: #666; margin-top: 20px;">This email was sent automatically. Please do not reply.</p>
+        </div>
         `,
       }),
     ]);
