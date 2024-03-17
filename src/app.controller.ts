@@ -1,13 +1,6 @@
-import { Public } from './modules/auth/common';
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Req,
-  Res,
-} from '@nestjs/common';
-import type { Request, Response } from 'express';
+import { Ip, Public } from './modules/auth/common';
+import { Controller, Get, HttpCode, HttpStatus, Res } from '@nestjs/common';
+import type { Response } from 'express';
 
 import axios from 'axios';
 
@@ -16,16 +9,8 @@ export class AppController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  async main(@Req() request: Request, @Res() response: Response) {
-    const ip =
-      request.headers['x-real-ip'] ||
-      request.headers['x-forwarded-for'] ||
-      request.socket.remoteAddress ||
-      '';
-
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
-
-    this.fetchHealTchecks(ipAddress);
+  async main(@Ip() ip: string, @Res() response: Response) {
+    this.fetchHealTchecks(ip);
 
     return response.status(HttpStatus.OK).json({
       status: HttpStatus.OK,

@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { Request } from 'express';
 
 import { UsersService } from '../users/users.service';
 import { compare, hash } from '../../utils/bcrypt';
@@ -118,17 +117,10 @@ export class AuthService {
     }
   }
 
-  async getMe(request: Request, user: User) {
-    const ip =
-      request.headers['x-real-ip'] ||
-      request.headers['x-forwarded-for'] ||
-      request.socket.remoteAddress ||
-      '';
+  async getMe(ip: string, user: User) {
+    const location = await getLocation(ip);
 
-    const ipAddress = Array.isArray(ip) ? ip[0] : ip;
-    const location = await getLocation(ipAddress);
-
-    this.setMetaData(user.id, ipAddress, location);
+    this.setMetaData(user.id, ip, location);
 
     delete user.password;
     delete user.resetPasswordToken;

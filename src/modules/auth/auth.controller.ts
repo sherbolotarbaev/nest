@@ -7,12 +7,11 @@ import {
   HttpStatus,
   Patch,
   Post,
-  Req,
   Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 
 import { AuthService } from './auth.service';
 
@@ -23,6 +22,7 @@ import {
   LocalAuthGuard,
   GoogleOauthGuard,
   User,
+  Ip,
   Public,
 } from './common';
 
@@ -77,8 +77,8 @@ export class AuthController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  async getMe(@Req() request: Request, @User() user: User) {
-    return await this.authService.getMe(request, user);
+  async getMe(@Ip() ip: string, @User() user: User) {
+    return await this.authService.getMe(ip, user);
   }
 
   @Patch('me')
