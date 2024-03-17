@@ -51,7 +51,7 @@ export function setup(app: INestApplication): INestApplication {
           : new session.MemoryStore(),
       cookie: {
         httpOnly: true,
-        signed: true,
+        // signed: true,
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
         maxAge: COOKIE_MAX_AGE,
