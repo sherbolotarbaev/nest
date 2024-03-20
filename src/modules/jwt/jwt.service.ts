@@ -26,7 +26,7 @@ export class JwtService extends NestJwtService {
 
   async compareResetPasswordToken(identificationToken: string) {
     try {
-      return this.verifyAsync(identificationToken, {
+      return await this.verifyAsync(identificationToken, {
         secret: process.env.JWT_SECRET_KEY,
       });
     } catch (e: any) {

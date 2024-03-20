@@ -240,7 +240,7 @@ export class AuthService {
     const hashedPassword = await hash(password);
 
     if (!userId) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException(`User doesn't exist`);
     }
 
     await this.prisma.user.update({
